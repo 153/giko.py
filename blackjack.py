@@ -1,4 +1,5 @@
 import random
+import copy
 import bank
 
 state = {}
@@ -6,6 +7,12 @@ state = {}
 # TODO: new players start with 20 tokens
 # you can gamble with as much tokens as you want
 # and you can't drop below 1 token
+
+suits = {"hearts": "♥",
+         "spades": "♠",
+         "clubs": "♣",
+         "diamonds": "♦"
+         }
 
 def cmd(player, msg):
     msg = msg.split()
@@ -24,7 +31,6 @@ def cmd(player, msg):
         output.append("Blackjack commands: !deal, !hit, !stand, !money")
     return output
 
-
 def play(mode="", player=""):
     global state
     
@@ -40,10 +46,10 @@ def play(mode="", player=""):
         except:
             pass
             
-        deck = {"heart": [i+1 for i in range(13)],
-                "spade": [i+1 for i in range(13)],
-                "club": [i+1 for i in range(13)],
-                "diamond": [i+1 for i in range(13)]}
+        deck = {"hearts": [i+1 for i in range(13)],
+                "spades": [i+1 for i in range(13)],
+                "clubs": [i+1 for i in range(13)],
+                "diamonds": [i+1 for i in range(13)]}
         hand, dealer = [], []
         
         state[player] = []
@@ -137,7 +143,28 @@ def cnt_total(player):
     cards = state[player]
     player_score = 0
     dealer = 0
+
+    player_array = copy.deepcopy(cards[0])
+    dealer_array = copy.deepcopy(cards[1])
+
+    for n, p in enumerate(player_array):
+        names = {11: "J", 12: "Q", 13: "K"}
+        if p[1] > 10:
+            p[1] = names[p[1]]
+        player_array[n] = str(suits[p[0]] + str(p[1]))
+    player_array = "(" + "/".join(player_array) + ")"
+
+    for n, p in enumerate(dealer_array):
+        names = {11: "J", 12: "Q", 13: "K"}
+        if p[1] > 10:
+            p[1] = names[p[1]]
+        dealer_array[n] = str(suits[p[0]] + str(p[1]))
+    if len(dealer_array) < 2:
+        dealer_array.append("??")
+    dealer_array = "(" + "/".join(dealer_array) + ")"
+
     for c in cards[0]:
+        print(c)
         if c[1] > 10:
             player_score += 10
         else:
@@ -147,7 +174,7 @@ def cnt_total(player):
             dealer += 10
         else:
             dealer += c[1]
-    return f"You have {player_score} and the dealer has {dealer}"
+    return f"You have {player_score} {player_array} and the dealer has {dealer} {dealer_array}"
 
 def main():
     while True:
