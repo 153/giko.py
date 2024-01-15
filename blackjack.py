@@ -1,22 +1,37 @@
-#!/usr/bin/python3
-
 import random
+import bank
 
 state = {}
-leaders = {"Archduke": 9999}
 
 # TODO: new players start with 20 tokens
 # you can gamble with as much tokens as you want
 # and you can't drop below 1 token
 
+def cmd(player, msg):
+    msg = msg.split()
+    bj_play_commands = ["!deal", "!hit", "!stand"]
+    bj_other = ["!money"]
+    output = []
+
+    if msg[0] in bj_play_commands:
+        if msg[0] == "!deal":
+            output += play("deal", player)
+        elif msg[0] == "!hit":
+            output += play("hit", player)
+        elif msg[0] == "!stand":
+            output += play("stand", player)
+    elif msg[0] == "!help":
+        output.append("Blackjack commands: !deal, !hit, !stand, !money")
+    return output
+
+
 def play(mode="", player=""):
     global state
-    global leaders
     
     output = []
 
-    if not player in leaders:
-        leaders[player] = 0
+    if bank.check_balance(player, 1) < 1:
+        bank.deposit(player, 5)
         
     if mode == "deal":
         try:
@@ -64,7 +79,7 @@ def play(mode="", player=""):
         if total > 21:
             output.append(cnt_total(player))
             output.append("Oops! You bust!")
-            leaders[player] -= 1
+            bank.deduct(player, 1)
             state[player] = []
 
         else:
@@ -98,15 +113,15 @@ def play(mode="", player=""):
         output.append(cnt_total(player))
         if dtotal > 21:
             output.append("The dealer bust, you won!")
-            leaders[player] += 1
+            bank.deposit(player, 1)
         elif dtotal == total:
             output.append("Push: you get your money back.")
         elif dtotal > total:
             output.append("The dealer beat you, you lose.")
-            leaders[player] -= 1
+            bank.deduct(player, 1)
         else:
             output.append("You beat the dealer. Good job!")
-            leaders[player] += 1
+            bank.deposit(player, 1)
         state[player] = []
     return output
         
@@ -134,12 +149,6 @@ def cnt_total(player):
             dealer += c[1]
     return f"You have {player_score} and the dealer has {dealer}"
 
-def see_leaders():
-    global leaders 
-    leaderboard = [[i, leaders[i]] for i in leaders]
-    leaderboard.sort(key = lambda x: x[1], reverse=True)
-    return str(leaderboard)
-
 def main():
     while True:
         command = input("[n/h/s] ")
@@ -154,3 +163,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+print("Blackjack plugin loaded")

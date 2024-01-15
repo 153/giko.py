@@ -4,25 +4,34 @@ import datetime
 import getopt
 import sys
 import time
+import importlib
 
 import socketio
 import requests
 
 import blackjack
+import bank
 
 sio = socketio.Client()
 session = requests.Session()
 
 Users = {}
 my_id = ""
+anon_name = "Spy"
+
+plugins = ["blackjack", "bank"]
 
 def main():
     server = "play.gikopoi.com"
     area = "for"
-    room = "nerd_office"
-    character = "giko"
+    room = "bar"
+    character = "naito_npc"
     name = "giko.py"
     password = ""
+
+    for i in plugins:
+        __import__(i)
+    
     logon(server, area, room, character, name, password)
 
     while True:
@@ -90,6 +99,7 @@ def get_username(userid):
 
 def send_message(msg):
     sio.emit("user-msg", msg)
+    sio.emit("user-msg", "")
     
 @sio.event
 def connect():
@@ -118,32 +128,29 @@ def user_join(data):
 @sio.on('server-msg')
 def server_msg(event,namespace):
     author = get_username(event)
+    output = []
+
+    if author == "":
+        author = anon_name
     if event == my_id:
         return
     if len(namespace) == 0:
         return
     
-    msg = namespace.split()
-    bj_play_commands = ["!deal", "!hit", "!stand"]
-    bj_other = ["!money"]
-
-    if msg[0] == "!help":
-        send_message("Blackjack commands: !deal, !hit, !stand, !money")
-        
-    elif msg[0] in bj_play_commands:
-        if msg[0] == "!deal":
-            output = blackjack.play("deal", author)
-        elif msg[0] == "!hit":
-            output = blackjack.play("hit", author)
-        elif msg[0] == "!stand":
-            output = blackjack.play("stand", author)
-        for o in output:
-            send_message(o)
-            time.sleep(1)
-    elif msg[0] == "!money":
-        leaders = blackjack.see_leaders()
-        print(leaders)
-        send_message(leaders)
+    for i in plugins:
+        cmd = getattr(eval(i), "cmd")
+        output.append(cmd(author, namespace))
+    output = [i for i in output if i]
+    print(output)
+    if len(output):
+        if isinstance(output[0], list):
+            output = [o for oo in output for o in oo]
+        print(output)
+                            
+        if len(output):
+            for o in output:
+                send_message(o)
+                time.sleep(1)
     
     print('< {} > {}'.format(author, namespace))
 
