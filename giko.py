@@ -28,9 +28,6 @@ def main():
     character = "naito_npc"
     name = "giko.py"
     password = ""
-
-    for i in plugins:
-        __import__(i)
     
     logon(server, area, room, character, name, password)
 
@@ -137,22 +134,20 @@ def server_msg(event,namespace):
     if len(namespace) == 0:
         return
     
+    print('< {} > {}'.format(author, namespace))
+    
     for i in plugins:
         cmd = getattr(eval(i), "cmd")
         output.append(cmd(author, namespace))
     output = [i for i in output if i]
-    print(output)
     if len(output):
         if isinstance(output[0], list):
             output = [o for oo in output for o in oo]
-        print(output)
                             
         if len(output):
             for o in output:
                 send_message(o)
                 time.sleep(1)
-    
-    print('< {} > {}'.format(author, namespace))
 
 
 if __name__ == "__main__":

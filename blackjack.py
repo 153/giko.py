@@ -35,7 +35,8 @@ def play(mode="", player=""):
     global state
     
     output = []
-
+    test = bank.check_balance(player)
+    
     if bank.check_balance(player, 1) < 1:
         bank.deposit(player, 5)
         
@@ -164,7 +165,6 @@ def cnt_total(player):
     dealer_array = "(" + "/".join(dealer_array) + ")"
 
     for c in cards[0]:
-        print(c)
         if c[1] > 10:
             player_score += 10
         else:

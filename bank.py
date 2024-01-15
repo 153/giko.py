@@ -68,13 +68,15 @@ def check_balance(player, silent=0):
         return f"{player} has {moneys[player]} gikocoins"
     if silent:
         return 0
-    return f"{player} doesn't have any gikocoins"
+    return add_entry(player)
     
-def add_entry(player):
+def add_entry(player, silent=0):
     if not player in moneys:
         moneys[player] = 20
         write_file()
+        if silent: return
         return "Welcome to GikoBank, you now have 20 GikoCoins"
+    if silent: return
     return "You already have an account and you have" + check_balance(player)
 
 def deposit(player, amt):
@@ -112,8 +114,8 @@ def send_money(sender="", target="", amt=0, silent=0):
 def wealth():
     index = [[m, moneys[m]] for m in moneys]
     index.sort(key = lambda x: x[1], reverse=True)
-    print(index)
+    index = index[:5]
     index = " / ".join([": ".join([i[0], str(i[1])]) for i in index])
-    return index
+    return "Top 5: " + index
 
 print("Bank plugin loaded")
