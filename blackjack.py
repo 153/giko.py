@@ -17,7 +17,6 @@ suits = {"hearts": "♥",
 def cmd(player, msg):
     msg = msg.split()
     bj_play_commands = ["!deal", "!hit", "!stand"]
-    bj_other = ["!money"]
     output = []
 
     if msg[0] in bj_play_commands:
@@ -28,7 +27,7 @@ def cmd(player, msg):
         elif msg[0] == "!stand":
             output += play("stand", player)
     elif msg[0] == "!help":
-        output.append("Blackjack commands: !deal, !hit, !stand, !money")
+        output.append("Blackjack commands: !deal, !hit, !stand")
     return output
 
 def play(mode="", player=""):

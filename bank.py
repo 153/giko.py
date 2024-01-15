@@ -77,7 +77,7 @@ def add_entry(player, silent=0):
         if silent: return
         return "Welcome to GikoBank, you now have 20 GikoCoins"
     if silent: return
-    return "You already have an account and you have" + check_balance(player)
+    return "You already have an account and " + check_balance(player)
 
 def deposit(player, amt):
     moneys[player] += amt
