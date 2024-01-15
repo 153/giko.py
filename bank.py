@@ -28,6 +28,8 @@ def cmd(player, msg):
             if len(msg) > 2:
                 msg[1] = " ".join(msg[1:])
                 output.append(check_balance(msg[1]))
+            elif len(msg) == 2:
+                output.append(check_balance(msg[1]))
             else:
                 output.append(check_balance(player))
         elif msg[0] == "!create":
