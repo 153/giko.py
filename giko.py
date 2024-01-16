@@ -11,6 +11,7 @@ import requests
 
 import blackjack
 import bank
+import quotes
 
 sio = socketio.Client()
 session = requests.Session()
@@ -19,7 +20,7 @@ Users = {}
 my_id = ""
 anon_name = "Spy"
 
-plugins = ["blackjack", "bank"]
+plugins = ["blackjack", "bank", "quotes"]
 
 def main():
     server = "play.gikopoi.com"
@@ -145,6 +146,7 @@ def server_msg(event,namespace):
         output.append(cmd(author, namespace))
     output = [i for i in output if i]
     if len(output):
+        print(output)
         if isinstance(output[0], list):
             output = [o for oo in output for o in oo]
                             
