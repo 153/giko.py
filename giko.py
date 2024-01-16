@@ -139,6 +139,9 @@ def server_msg(event,namespace):
     if len(namespace) == 0:
         return
     
+    if "◇" in namespace:
+        namespace = namespace.replace("◇", "◆")
+    
     print('< {} > {}'.format(author, namespace))
     
     for i in plugins:
