@@ -1,0 +1,14 @@
+A bot for Gikopoi.com , written in Python
+
+Install requirements with 
+pip3 install -r requirements.txt
+
+run the bot with python3 giko.py
+
+Current bot plugins:
+ * Blackjack - classic card game
+ * Bank - store, send, receive Gikocoins
+ * Memo - send and receive messages to AFK friends
+ * Quote - get a random quote from a text file (samples included)
+
+No copyright - public domain - do anything you want with this code
