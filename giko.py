@@ -26,12 +26,14 @@ plugins = ["blackjack", "bank", "quotes", "memo"]
 def main():
     server = "play.gikopoi.com"
     area = "for"
-    room = "bar"
+    room = "nerd_office"
     character = "naito_npc"
     name = "giko.py"
     password = ""
     
     logon(server, area, room, character, name, password)
+
+    print([Users[u] for u in Users])
 
     while True:
         val = input()
@@ -51,7 +53,6 @@ def logon(server, area, room, character, name,  password):
                      "password": password}
     connect_response = session.post(f"{url}/login", connect_value)
     connect_json = connect_response.json()
-    print(connect_json)
     if not connect_json['isLoginSuccessful'] is True:
         print("Not able to login")
         return
@@ -70,7 +71,6 @@ def logon(server, area, room, character, name,  password):
     ret = session.post(f"{url}/client-log",
                        data = send,
                        headers = {"Content-Type": "text/plain"})
-    print(ret.text)
     
     global my_id
     my_id = user_id
@@ -78,7 +78,7 @@ def logon(server, area, room, character, name,  password):
     sio.connect(wss, headers={"private-user-id": p_uid})
 
     get_users(session, url, area, room)
-    print([Users[k] for k in Users])
+    
     return
 
 def get_users(s:requests.Session, server, area, room):
@@ -104,11 +104,11 @@ def send_message(msg):
     
 @sio.event
 def connect():
-    print("I'm connected!")
+    print("[+] I'm connected!")
 
 @sio.event
 def connect_error(data):
-    print("The connection failed!")
+    print("[+] The connection failed!")
 
 @sio.event
 def disconnect():
@@ -118,16 +118,34 @@ def disconnect():
 def user_join(data):
     try:
         user = [data['id'], data['name']]
+        if data['id'] == my_id:
+            return
         if len(data['name']) == 0:
             user[1] = anon_name
         Users[user[0]] = user[1]
-        print("{} joined".format(user[1]))
+        tstamp = datetime.datetime.now().strftime("%H:%M")
+        print(tstamp, "{} joined".format(user[1]))
         time.sleep(1)
         
     except Exception as ex:
         print(ex)
         pass
+    
+    print([Users[u] for u in Users])
 
+@sio.on('server-user-left-room')
+def user_leave(data):
+    try:
+        tstamp = datetime.datetime.now().strftime("%H:%M")
+        print(tstamp, "{} left".format(Users[data]))
+        del Users[data]
+        
+    except Exception as ex:
+        print(ex)
+
+    print([Users[u] for u in Users])
+        
+    
 @sio.on('server-msg')
 def server_msg(event,namespace):
     author = get_username(event)
@@ -142,15 +160,14 @@ def server_msg(event,namespace):
     
     if "◇" in namespace:
         namespace = namespace.replace("◇", "◆")
-    
-    print('< {} > {}'.format(author, namespace))
+    tstamp = datetime.datetime.now().strftime("%H:%M")
+    print('{} < {} > {}'.format(tstamp, author, namespace))
     
     for i in plugins:
         cmd = getattr(eval(i), "cmd")
         output.append(cmd(author, namespace))
     output = [i for i in output if i]
     if len(output):
-        print(output)
         if isinstance(output[0], list):
             output = [o for oo in output for o in oo]
                             
