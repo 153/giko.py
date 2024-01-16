@@ -12,6 +12,7 @@ import requests
 import blackjack
 import bank
 import quotes
+import memo
 
 sio = socketio.Client()
 session = requests.Session()
@@ -20,7 +21,7 @@ Users = {}
 my_id = ""
 anon_name = "Spy"
 
-plugins = ["blackjack", "bank", "quotes"]
+plugins = ["blackjack", "bank", "quotes", "memo"]
 
 def main():
     server = "play.gikopoi.com"
