@@ -1,9 +1,10 @@
 A bot for Gikopoi.com , written in Python
 
-Install requirements with 
-pip3 install -r requirements.txt
+ * Install requirements with: pip3 install -r requirements.txt
+ * modify values like server, area, room, name, character... 
+ * run the bot with python3 giko.py
 
-run the bot with python3 giko.py
+Engage with the bot in the game world by entering !help as a chat message
 
 Current bot plugins:
  * Blackjack - classic card game
