@@ -6,7 +6,6 @@ def cmd(player, msg):
     msg = msg.split()
     commands = ["!mail", "!help"]
 
-    print(outbox)
     if player in outbox:
         mc = len(outbox[player])
         for n, i in enumerate(outbox[player]):
