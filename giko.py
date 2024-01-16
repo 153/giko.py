@@ -87,12 +87,14 @@ def get_users(s:requests.Session, server, area, room):
         print("[+] found {}".format(str(len(users))))
         for user in users:
             Users[user['id']] = user['name']
+            if len(user['name']) == 0:
+                Users[user['id']] = anon_name
 
 def get_username(userid):
     try:
         return Users[userid]
     except:
-        return "Anonymous"
+        return anon_name
 
 def send_message(msg):
     sio.emit("user-msg", msg)
@@ -114,6 +116,8 @@ def disconnect():
 def user_join(data):
     try:
         user = [data['id'], data['name']]
+        if len(data['name']) == 0:
+            user[1] = anon_name
         Users[user[0]] = user[1]
         print("{} joined".format(user[1]))
         time.sleep(1)
