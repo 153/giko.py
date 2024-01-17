@@ -88,6 +88,7 @@ def get_users(s:requests.Session, server, area, room):
         users = val.json()['connectedUsers'];
         print("[+] found {}".format(str(len(users))))
         for user in users:
+            global Users
             Users[user['id']] = user['name']
             if len(user['name']) == 0:
                 Users[user['id']] = anon_name
@@ -117,6 +118,7 @@ def disconnect():
 @sio.on('server-user-joined-room')
 def user_join(data):
     try:
+        global Users
         user = [data['id'], data['name']]
         if data['id'] == my_id:
             return
@@ -125,7 +127,6 @@ def user_join(data):
         Users[user[0]] = user[1]
         tstamp = datetime.datetime.now().strftime("%H:%M")
         print(tstamp, "{} joined".format(user[1]))
-        time.sleep(1)
         
     except Exception as ex:
         print(ex)
@@ -136,12 +137,14 @@ def user_join(data):
 @sio.on('server-user-left-room')
 def user_leave(data):
     try:
+        global Users
         tstamp = datetime.datetime.now().strftime("%H:%M")
         print(tstamp, "{} left".format(Users[data]))
         del Users[data]
         
     except Exception as ex:
         print(ex)
+        pass
 
     print([Users[u] for u in Users])
         
