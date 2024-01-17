@@ -19,7 +19,7 @@ def cmd(author, msg):
     return output
 
 def get_quote(fn):
-    with open(fn) as quotedb:
+    with open(f"./quotedb/{fn}") as quotedb:
         quotedb = quotedb.read().splitlines()
     quote = random.choice(quotedb)
     return quote

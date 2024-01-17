@@ -1,4 +1,4 @@
-memodb = "memos.txt"
+memodb = "./data/memos.txt"
 
 def cmd(player, msg):
     global outbox

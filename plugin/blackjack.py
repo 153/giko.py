@@ -1,6 +1,6 @@
 import random
 import copy
-import bank
+from . import bank
 
 state = {}
 

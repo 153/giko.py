@@ -1,6 +1,6 @@
 import os
 
-bankfn = "bank.txt"
+bankfn = "./data/bank.txt"
 moneys = {}
 bankfile = []
 

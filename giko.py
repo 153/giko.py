@@ -8,11 +8,11 @@ import time
 import socketio
 import requests
 
-import blackjack
-import craps
-import bank
-import quotes
-import memo
+from plugin import blackjack
+from plugin import craps
+from plugin import bank
+from plugin import memo
+from plugin import quotes
 
 sio = socketio.Client()
 session = requests.Session()
