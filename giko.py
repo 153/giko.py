@@ -10,6 +10,7 @@ import socketio
 import requests
 
 import blackjack
+import craps
 import bank
 import quotes
 import memo
@@ -21,12 +22,12 @@ Users = {}
 my_id = ""
 anon_name = "Spy"
 
-plugins = ["blackjack", "bank", "quotes", "memo"]
+plugins = ["blackjack", "craps", "bank", "quotes", "memo",]
 
 def main():
     server = "play.gikopoi.com"
     area = "for"
-    room = "nerd_office"
+    room = "bar"
     character = "naito_npc"
     name = "giko.py"
     password = ""

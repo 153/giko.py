@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import random
 import copy
 import bank
@@ -11,19 +13,33 @@ def cmd(player, msg):
 
     if msg[0] in commands:
         if msg[0] == "!help":
-            output.append("!craps <win/lose> <amt>, !roll")
+            output.append("Craps commands: !craps <win/lose> <amt>, "
+                          "!roll")
         elif msg[0] == "!craps":
             amt = 1
             if len(msg) > 2:
                 try:
                     amt = int(msg[2])
                 except:
-                    amt = 1
+                    pass
                 if amt < 1:
                     amt = 1
+                if msg[1] in ["win", "lose"]:
+                    output += play("deal", player, msg[1], amt)
+                else:
+                    output += play("deal", player, "win", amt)
             elif len(msg) == 2:
                 if msg[1] in ["win", "lose"]:
                     output += play("deal", player, msg[1], 1)
+                else:
+                    try:
+                        amt = int(msg[1])
+                    except:
+                        pass
+                    if amt < 1:
+                        amt = 1
+                    output += play("deal", player, "win", amt)
+                    
             elif len(msg) == 1:
                 output += play("deal", player, "win", 1)
             else:
@@ -60,8 +76,7 @@ def play(mode="", player="", style="", amt=1):
         else:
             output.append("You need to start a game first!")
             
-    print("\n", state)
-    print(output)
+    return output
 
 
 def roll(player="", win=[], lose=[], amt=1):
@@ -69,25 +84,34 @@ def roll(player="", win=[], lose=[], amt=1):
     output = []
     dices = [random.randint(1, 6), random.randint(1, 6)]
     total = sum(dices)
-    output.append(": ".join([str(total), str(dices)]))
     
     if total in win:
-        output.append(f"You won {amt}, {player}!")
+        bank.deposit(player, amt)
+        output.append(f"{player} rolled {total} {dices} -- "
+                      f"You won {amt}, {player}! "
+                      f"You now have {bank.check_balance(player, 1)}"
+                      " gikocoins.")
         if player in state: del state[player]
     elif total in lose:
-        output.append(f"You lost {amt}, {player}!")
+        bank.deduct(player, amt)
+        output.append(f"{player} rolled {total} {dices} -- "
+                      f"You lost {amt}, {player}! "
+                      f"You now have {bank.check_balance(player, 1)}"
+                      " gikocoins.")                      
         if player in state: del state[player]
     else:
         if len(win) == 2:
             state[player] = [[total], [7], amt]
+            output.append(f"{player} rolled {total} {dices}, "
+                          f"now roll {total} to win or 7 to lose.")
         elif len(win) == 3:
             state[player] = [[7], [total], amt]
-        output.append(f"Roll again, {player}!")
+            output.append(f"{player} rolled {total} {dices}, "
+                          f"now roll 7 to win or {total} to lose.")
+        else:
+            output.append(f"{player} rolled {total} {dices}, "
+                          f"aiming for {win}, lose is {lose}. "
+                          f"Roll again, {player}!")
     return output
-        
-
+            
 print("Craps plugin loaded")
-
-if __name__ == "__main__":
-    play("deal", "Spy", "win", 1)
-    play("roll", "test")
