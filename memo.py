@@ -16,7 +16,8 @@ def cmd(player, msg):
             
     if msg[0] in commands:
         if msg[0] == "!help":
-            output.append("Memo commands: !mail <username> || <message> (seperate username from message with || )")
+            output.append("Memo commands: !mail <username> || <message> "
+                          "(seperate username from message with || )")
         elif msg[0] == "!mail":
             output.append(sendmail(player, msg[1:]))
     return output

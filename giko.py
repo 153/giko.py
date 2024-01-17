@@ -4,7 +4,6 @@ import datetime
 import getopt
 import sys
 import time
-import importlib
 
 import socketio
 import requests
@@ -44,6 +43,7 @@ def main():
     return
 
 def logon(server, area, room, character, name,  password):
+    global my_id
     url = "https://" + server
     wss = "ws://" + server + ":8085/socket.io/"
     print("[+] Connect")
@@ -73,13 +73,10 @@ def logon(server, area, room, character, name,  password):
                        data = send,
                        headers = {"Content-Type": "text/plain"})
     
-    global my_id
     my_id = user_id
     print(f"id: {user_id}")
     sio.connect(wss, headers={"private-user-id": p_uid})
-
     get_users(session, url, area, room)
-    
     return
 
 def get_users(s:requests.Session, server, area, room):
@@ -172,6 +169,8 @@ def server_msg(event,namespace):
         output.append(cmd(author, namespace))
     output = [i for i in output if i]
     if len(output):
+        # need to rewrite list compression for multi-line messages
+        
         if isinstance(output[0], list):
             output = [o for oo in output for o in oo]
                             

@@ -4,10 +4,6 @@ import bank
 
 state = {}
 
-# TODO: new players start with 20 tokens
-# you can gamble with as much tokens as you want
-# and you can't drop below 1 token
-
 suits = {"hearts": "♥",
          "spades": "♠",
          "clubs": "♣",

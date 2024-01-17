@@ -53,9 +53,6 @@ def cmd(player, msg):
 
     return output
         
-        
-                
-        
 def write_file():
     bankfile = []
     for m in moneys:
