@@ -135,7 +135,7 @@ def play(mode="", player="", amt=1):
         if dtotal > 10:
             dtotal = 10
             
-        while dtotal <= 17:
+        while dtotal < 17:
             deck, dealer = deal(deck, dealer)
             if dealer[-1][1] > 10:
                 dtotal += 10
