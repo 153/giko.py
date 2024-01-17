@@ -27,6 +27,8 @@ def cmd(player, msg):
                     amt = int(msg[1])
                 except:
                     amt = 1
+            if amt < 1:
+                amt = 1
             output += play("deal", player, amt)
         elif msg[0] == "!hit":
             output += play("hit", player)
