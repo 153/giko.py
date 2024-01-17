@@ -4,7 +4,7 @@ import random
 import copy
 import bank
 
-state = {"test": [[8], [7], 1]}
+state = {}
 
 def cmd(player, msg):
     msg = msg.split()
