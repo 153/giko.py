@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import random
 import copy
 import bank
