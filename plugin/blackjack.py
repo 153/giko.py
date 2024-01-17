@@ -48,8 +48,11 @@ def play(mode="", player="", amt=1):
     if mode == "deal":
         try:
             if len(state[player][0]):
-                output.append(f"You give up on your old hand and lose {amt} gikocoins. Enter !deal to start a new round")
-                bank.deduct(player, amt)
+                output.append(f"You give up on your old hand and lose {state[player][3]} "
+                              f"gikocoins, and start a new round, wagering {amt}")
+                bank.deduct(player, state[player][3])
+                del state[player]
+                output += play(mode, player, amt)
                 return output
         except:
             pass

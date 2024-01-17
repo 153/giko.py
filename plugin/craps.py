@@ -3,6 +3,7 @@ import copy
 from . import bank
 
 state = {}
+# state[player] = [win, lose, amt]
 
 def cmd(player, msg):
     msg = msg.split()
@@ -62,7 +63,11 @@ def play(mode="", player="", style="", amt=1):
 
     if mode == "deal":
         if player in state:
-            output.append("can't start a new game while you're still playing")
+            output.append(f"You forfeit {state[player][2]} and "
+                          "begin a new game...")
+            bank.deduct(player, amt)
+            del state[player]
+            output += play(mode, player, style, amt)
         elif style == "win":
             output += roll(player, [7, 11], [2, 3, 12], amt)
         elif style == "lose":
