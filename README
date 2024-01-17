@@ -1,10 +1,11 @@
-A bot for Gikopoi.com , written in Python
+A bot for https://play.gikopoi.com , written in Python
 
  * Install requirements with: pip3 install -r requirements.txt
- * modify values like server, area, room, name, character... 
- * run the bot with python3 giko.py
+ * In giko.py , modify values like server, area, room, name, character...
+ * Run the bot with ./giko.py or python3 giko.py
 
 Engage with the bot in the game world by entering !help as a chat message
+By default, the bot lives in https://play.gikopoi.com/?roomid=bar
 
 Current bot plugins:
  * Blackjack - classic card game
