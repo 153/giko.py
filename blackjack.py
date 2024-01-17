@@ -132,7 +132,8 @@ def play(mode="", player="", amt=1):
         dtotal = dealer[0][1]
         if dtotal > 10:
             dtotal = 10
-        while (dtotal < total) or (dtotal <= 17):
+            
+        while dtotal <= 17:
             deck, dealer = deal(deck, dealer)
             if dealer[-1][1] > 10:
                 dtotal += 10
@@ -220,20 +221,5 @@ def cnt_total(player, bj=False):
         else:
             dealer += c[1]
     return f"You have {player_score} {player_array} and the dealer has {dealer} {dealer_array}"
-
-def main():
-    while True:
-        command = input("[n/h/s] ")
-        if command == "n":
-            print(play("deal", "player"))
-        elif command == "h":
-            print(play("hit", "player"))
-        elif command == "s":
-            print(play("stand", "player"))
-        elif command == "l":
-            print(see_leaders())
-
-if __name__ == "__main__":
-    main()
 
 print("Blackjack plugin loaded")
