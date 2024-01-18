@@ -132,8 +132,8 @@ def roll(player="", win=[], lose=[], amt=1, side=[]):
                           f"Roll again, {player}!")
     if len(side):
         wager = side[1]
-        sides = {"field": {3: wager, 4: wager, 9: wager, 10: wager,
-                           2: 2 * wager, 12: 3 * wager},
+        sides = {"field": {3: wager, 4: wager, 9: wager, 10: wager, 
+                           11: wager, 2: 2 * wager, 12: 3 * wager},
                  "seven": {7: 4 * wager},
                  "two": {2: 30 * wager},
                  "twelve": {12: 30 * wager},
