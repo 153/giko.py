@@ -29,7 +29,7 @@ def main():
     global api
     server = "play.gikopoi.com"
     area = "for"
-    room = "bar"
+    room = "nerd_office"
     character = "naito_npc"
     name = "giko.py"
     password = ""
@@ -84,7 +84,6 @@ def logon(server, area, room, character, name,  password):
     my_id = user_id
     print(f"id: {user_id}")
     sio.connect(wss, headers={"private-user-id": pid})
-    time.sleep(2)
     get_users(session, url, area, room)
     return
 

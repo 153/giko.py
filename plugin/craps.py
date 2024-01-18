@@ -13,7 +13,7 @@ def cmd(player, msg):
     if msg[0] in commands:
         if msg[0] == "!help":
             output.append("Craps commands: !craps <win/lose> <amt>, "
-                          "!roll")
+                          "!roll <sidebet> <amt>")
         elif msg[0] == "!craps":
             amt = 1
             if len(msg) > 2:
@@ -47,11 +47,26 @@ def cmd(player, msg):
                     "!craps <win/lose> (pick one), optionally "
                     "followed by a stake.")
         elif msg[0] == "!roll":
-            output += play("roll", player)
+            side_bets = ["field", "seven", "craps", "two", "three", "eleven", "twelve"]
+            if len(msg) >= 2:
+                if msg[1] not in side_bets:
+                    output.append("!roll <sidebet> <amt> -- side bets are "
+                                  "the field, seven (4:1), craps (7:1), two (30:1), "
+                                  "twelve (30:1), eleven (15:1), three (15:1) "
+                                  "-- single roll bets with great payouts!")
+                else:
+                    try:
+                        sidebet = int(msg[2])
+                        if sidebet < 0: sidebet = 1
+                    except:
+                        sidebet = 1
+                    output += play("roll", player, side=[msg[1], sidebet])
+            else:
+                output += play("roll", player)
             
         return output
     
-def play(mode="", player="", style="", amt=1):
+def play(mode="", player="", style="", amt=1, side=[]):
     global state
     output = []
     test = bank.check_balance(player)
@@ -75,14 +90,15 @@ def play(mode="", player="", style="", amt=1):
     elif mode == "roll":
         if player in state:
             output += roll(player, state[player][0],
-                           state[player][1], state[player][2])
+                           state[player][1], state[player][2],
+                           side)
         else:
             output.append("You need to start a game first!")
             
     return output
 
 
-def roll(player="", win=[], lose=[], amt=1):
+def roll(player="", win=[], lose=[], amt=1, side=[]):
     global state
     output = []
     dices = [random.randint(1, 6), random.randint(1, 6)]
@@ -115,6 +131,28 @@ def roll(player="", win=[], lose=[], amt=1):
             output.append(f"{player} rolled {total} {dices}, "
                           f"aiming for {win}, lose is {lose}. "
                           f"Roll again, {player}!")
+    if len(side):
+        wager = side[1]
+        sides = {"field": {3: wager, 4: wager, 9: wager, 10: wager,
+                           2: 2 * wager, 12: 3 * wager},
+                 "seven": {7: 4 * wager},
+                 "two": {2: 30 * wager},
+                 "twelve": {12: 30 * wager},
+                 "three": {3: 15 * wager},
+                 "eleven": {11: 15 * wager},
+                 "craps": {2: 7 * wager,
+                           3: 7 * wager,
+                           12: 7 * wager}}
+        if total in sides[side[0]]:
+            payout = sides[side[0]][total]
+            bank.deposit(player, payout)
+            output.append(f"{player}'s wager of {wager} on {side[0]} pays out "
+                          f"{payout}, nice job, you now have "
+                          f"{bank.check_balance(player, 1)} gikocoins")
+        else:
+            bank.deduct(player, wager)
+            output.append(f"{player} lost his wager of {wager} on {side[0]}, "
+                          f"you now have {bank.check_balance(player, 1)} gikocoins")
     return output
             
 print("Craps plugin loaded")
