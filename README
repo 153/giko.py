@@ -10,6 +10,7 @@ By default, the bot lives in https://play.gikopoi.com/?roomid=bar
 Current bot plugins:
  * Blackjack - classic card game
  * Craps - classic dice game
+ * Roulette - classic spinning game
  * Bank - store, send, receive Gikocoins
  * Memo - send and receive messages to AFK friends
  * Quote - get a random quote from a text file (samples included)
