@@ -3,6 +3,7 @@ import copy
 from . import bank
 
 state = {}
+# {player: [hand, dealer, deck, amount]}
 
 suits = {"hearts": "♥",
          "spades": "♠",

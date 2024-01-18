@@ -1,9 +1,8 @@
 import random
-import copy
 from . import bank
 
 state = {}
-# state[player] = [win, lose, amt]
+# state[player] = [win, lose, amount]
 
 def cmd(player, msg):
     msg = msg.split()
