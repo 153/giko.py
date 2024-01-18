@@ -19,18 +19,24 @@ session = requests.Session()
 
 Users = {}
 my_id = ""
+pid = ""
+api = ""
 anon_name = "Spy"
 
 plugins = ["blackjack", "craps", "bank", "quotes", "memo",]
 
 def main():
+    global api
     server = "play.gikopoi.com"
     area = "for"
     room = "bar"
     character = "naito_npc"
     name = "giko.py"
     password = ""
-    
+
+    if "poipoi" in server:
+        api = "/api"
+
     logon(server, area, room, character, name, password)
 
     print([Users[u] for u in Users])
@@ -44,6 +50,8 @@ def main():
 
 def logon(server, area, room, character, name,  password):
     global my_id
+    global pid
+
     url = "https://" + server
     wss = "ws://" + server + ":8085/socket.io/"
     print("[+] Connect")
@@ -52,7 +60,7 @@ def logon(server, area, room, character, name,  password):
                      "areaId": area,
                      "roomId": room,
                      "password": password}
-    connect_response = session.post(f"{url}/login", connect_value)
+    connect_response = session.post(f"{url}{api}/login", connect_value)
     connect_json = connect_response.json()
     if not connect_json['isLoginSuccessful'] is True:
         print("Not able to login")
@@ -60,7 +68,7 @@ def logon(server, area, room, character, name,  password):
 
     print("[+] Connected")
     user_id = str(connect_json['userId'])
-    p_uid = str(connect_json['privateUserId'])
+    pid = str(connect_json['privateUserId'])
     version = str(connect_json["appVersion"])
     
     t_form = "%a %b %d %Y %H:%M:%S %Z (%z)"
@@ -75,13 +83,15 @@ def logon(server, area, room, character, name,  password):
     
     my_id = user_id
     print(f"id: {user_id}")
-    sio.connect(wss, headers={"private-user-id": p_uid})
+    sio.connect(wss, headers={"private-user-id": pid})
+    time.sleep(2)
     get_users(session, url, area, room)
     return
 
 def get_users(s:requests.Session, server, area, room):
     print("[+] Get Rooms Users")
-    val = s.get(f'{server}/areas/{area}/rooms/{room}')
+    val = s.get(f'{server}{api}/areas/{area}/rooms/{room}',
+                headers={"Authentication": f"Bearer {pid}"})
     if(val.status_code == 200):
         users = val.json()['connectedUsers'];
         print("[+] found {}".format(str(len(users))))
