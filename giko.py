@@ -14,6 +14,7 @@ from plugin import memo
 from plugin import quotes
 from plugin import craps
 from plugin import roulette
+from plugin import poker
 
 sio = socketio.Client()
 session = requests.Session()
@@ -24,7 +25,7 @@ pid = ""
 api = ""
 anon_name = "Spy"
 
-plugins = ["blackjack", "craps", "roulette", "bank", "quotes", "memo",]
+plugins = ["blackjack", "craps", "roulette", "poker", "bank", "quotes", "memo"]
 
 def main():
     global api
