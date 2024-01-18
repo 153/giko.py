@@ -13,7 +13,7 @@ suits = {"hearts": "♥",
 
 def cmd(player, msg):
     msg = msg.split()
-    bj_play_commands = ["!deal", "!hit", "!stand"]
+    bj_play_commands = ["!deal", "!hit", "!stand", "!dd"]
     output = []
 
     if msg[0] in bj_play_commands:
@@ -31,8 +31,10 @@ def cmd(player, msg):
             output += play("hit", player)
         elif msg[0] == "!stand":
             output += play("stand", player)
+        elif msg[0] == "!dd":
+            output += play("dd", player)
     elif msg[0] == "!help":
-        output.append("Blackjack commands: !deal <bet amount>, !hit, !stand")
+        output.append("Blackjack commands: !deal <bet amount>, !hit, !stand, !dd (double down)")
     return output
 
 def play(mode="", player="", amt=1):
@@ -131,21 +133,39 @@ def play(mode="", player="", amt=1):
             return output
         
         total = 0
+        ace = 0
         for h in hand:
             if h[1] > 10:
                 total += 10
             else:
                 total += h[1]
+            if h[1] == 1: ace = 1
+            
+        if total < 12 and ace:
+            total += 10
+
+        ace = 0
         dtotal = dealer[0][1]
         if dtotal > 10:
             dtotal = 10
+        elif dtotal == 1:
+            dtotal = 11
+            ace = 1
             
         while dtotal < 17:
             deck, dealer = deal(deck, dealer)
-            if dealer[-1][1] > 10:
-                dtotal += 10
+            if dealer[-1][1] > 10:                    
+                dealer[-1][1] = 10
+            if (dealer[-1][1] > 6) and ace:
+                if (dealer[-1][1] + dtotal) > 21:
+                    dtotal -= 10
+                    ace = 0
+                dtotal += dealer[-1][1]
+            elif (dtotal < 12) and (dealer[-1][1] == 1):
+                dtotal += 11
             else:
                 dtotal += dealer[-1][1]
+                    
         output.append(cnt_total(player))
         if dtotal > 21:
             bank.deposit(player, amt)
@@ -175,10 +195,25 @@ def play(mode="", player="", amt=1):
                  str(bank.check_balance(player, 1)),
                  "gikocoins."]))
         state[player] = []
+
+    elif mode == "dd":
+        if len(state[player]) < 1:
+            output.append("You need to start a hand.")
+            return output
+        if (2 * state[player][3]) < bank.check_balance(player, 1):
+            state[player][3] = state[player][3] * 2
+            attempt = play("hit", player)
+            
+            if "Oops!" not in attempt[-1]:
+                return play("stand", player)
+            else:
+                return attempt
+        
     if bj:
-        bank.deposit(player, (2 * amt))
+        payout = int(1.5 * amt)
+        bank.deposit(player, payout)
         output.append(" ".join(
-            ["You got a blackjack! Double your money!",
+            ["You got a blackjack! Payout 3 to 2!",
              "You now have",
              str(bank.check_balance(player, 1)),
              "gikocoins."]))
@@ -217,16 +252,28 @@ def cnt_total(player, bj=False):
         dealer_array.append("??")
     dealer_array = "(" + "/".join(dealer_array) + ")"
 
+    ace = 0
     for c in cards[0]:
         if c[1] > 10:
             player_score += 10
         else:
             player_score += c[1]
+        if c[1] == 1:
+            ace = 1
+    if player_score < 12 and ace:
+        player_score += 10
+        
+    ace = 0
     for c in cards[1]:
         if c[1] > 10:
             dealer += 10
         else:
             dealer += c[1]
+        if c[1] == 1:
+            ace = 1
+    if (dealer < 17) and ace:
+        dealer += 10
+        
     return f"You have {player_score} {player_array} and the dealer has {dealer} {dealer_array}"
 
 print("Blackjack plugin loaded")
