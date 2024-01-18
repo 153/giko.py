@@ -65,7 +65,7 @@ def play(mode="", player="", discard="", amt=1):
 
         state[player] = [deck, hand, amt]
         output.append(f"{player}'s hand is now {fmthand(player)}, "
-                      "enter some cards to discard (1-5)")
+                      "enter some cards to discard (0 or 1-5)")
         
     elif mode == "discard":
         deck, hand = state[player][0], state[player][1]
