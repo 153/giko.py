@@ -38,13 +38,18 @@ def cmd(player, msg):
 def play(mode="", player="", amt=1):
     global state
     output = []
-    test = bank.check_balance(player)
     bj = False
     
-    if bank.check_balance(player, 1) < 1:
-        bank.deposit(player, 5)
-    if bank.check_balance(player, 1) < amt:
+    try: amt = int(amt)
+    except: amt = 1
+
+    if amt < 1:
+        amt = 1
+    if amt > bank.check_balance(player, 1):
         amt = bank.check_balance(player, 1)
+    if amt < 1:
+        bank.deposit(player, 5)
+        amt = 1
         
     if mode == "deal":
         try:

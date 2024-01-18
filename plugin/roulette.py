@@ -68,8 +68,8 @@ def spin(player, bet, amt):
                           f"You now have {bank.check_balance(player, 1)} gikocoins")
     else:
         output.append("Please enter !spin <bet> <amt>, where "
-                      "bet is a single number between 0 and 36 -- payout 35x, "
-                      "even, odd, low (1-18), high (19-36) -- payout 1x, "
+                      "bet is a single number between 0 and 36 -- payout 35x // "
+                      "even, odd, low (1-18), high (19-36) -- payout 1x // "
                       "or first (1-12), second (13-24), or third (25-36) "
                       "-- payout 2x.")
     return output

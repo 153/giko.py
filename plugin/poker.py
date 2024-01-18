@@ -22,7 +22,7 @@ def cmd(player, msg):
     if msg[0] in commands:
         if msg[0] == "!help":
             output.append("Poker commands: !poker <amt>, "
-                          "!drop <cards> (like !drop 1, !drop 1 2")
+                          "!drop <cards> (like !drop 0, !drop 1 2")
         elif msg[0] == "!poker":
             try: amt = int(msg[1])
             except: amt = 1
@@ -32,12 +32,23 @@ def cmd(player, msg):
                 discard = " ".join(msg[1:])
                 output += play("discard", player, discard)
             else: 
-                output.append("Please type a list of space-seperated cards to discard, like !drop 0, !drop 2 3")
+                output.append("Please type a list of space-seperated cards to discard, like !drop 0, !drop 1, !drop 3 5")
     return output
 
 def play(mode="", player="", discard="", amt=1):
     global state
     output = []
+
+    try: amt = int(amt)
+    except: amt = 1
+
+    if amt < 1:
+        amt = 1
+    if amt > bank.check_balance(player, 1):
+        amt = bank.check_balance(player, 1)
+    if amt < 1:
+        bank.deposit(player, 5)
+        amt = 1
     
     if mode == "draw":
         if player in state:
@@ -61,12 +72,12 @@ def play(mode="", player="", discard="", amt=1):
         try:
             discard = [int(d) for d in discard.split(" ")]
         except:
-            return ["Please type a space seperated list of cards to discard, eg !drop 1 or !drop 2 3 or !drop 1 2 4"]
+            return ["Please type a space seperated list of cards to discard, eg !drop 0 or !drop 2 or !drop 1 2 4"]
         discard = [d for d in discard if d >= 0 if d < 6]
         discard = sorted(list(set(discard)), reverse=True)
         for d in discard:
             if d == 0:
-                pass
+                continue
             d -= 1
             hand.pop(d)
         deck, hand = deal(deck, hand)
@@ -106,7 +117,7 @@ def check(player):
 
     if len(scards) == 1:
         if scards[0][1] == 2:
-            if scards[0][0] > 10:
+            if scards[0][0] > 10 or scards[0][0] == 1:
                 matches.append("pair")
         elif scards[0][1] == 3:
             matches.append("3ofkind")
@@ -137,6 +148,8 @@ def check(player):
     elif "flush" in matches and "straight" in matches:
         matches = ["straight flush"]
 
+    if len(matches):
+        return matches[0]
     return matches
 
 def fmthand(player):
@@ -149,22 +162,14 @@ def fmthand(player):
 
 def reward(player):
     score = check(player)
-    if "flush" in score and "royal" in score:
-        score = "royal flush"
-    elif "flush" in score and "straight" in score:
-        score = "straight flush"
-    elif len(score):
-        score = score[0]
-    else:
-        score = None
         
     prizes = {"pair": 1, "2pair": 2, "3ofkind": 3,
               "straight": 4, "flush": 6, "full house": 9,
               "4ofkind": 25, "straight flush": 50,
               "royal flush": 800}
-    if score in prizes:
-        return state[player][2] * prizes[score]
-    return 0
+    if not len(score):
+        return 0
+    return state[player][2] * prizes[score]
     
 print("Poker plugin loaded")
 
