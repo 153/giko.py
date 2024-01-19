@@ -45,7 +45,13 @@ def main():
 
     while True:
         val = input()
-        sio.emit("user-msg", val)
+        if len(val):
+            if val[0] == ",":
+                move_around(val[1:])
+            else:
+                sio.emit("user-msg", val)
+        else:
+            sio.emit("user-msg", val)
         pass
     
     return
@@ -111,6 +117,13 @@ def get_username(userid):
 def send_message(msg):
     sio.emit("user-msg", msg)
     sio.emit("user-msg", "")
+
+def move_around(directions):
+    uplr = {"u": "up", "d": "down", "l":"left", "r":"right"}
+    directions = list(directions)
+    for d in directions:
+        if d in uplr:
+            sio.emit("user-move", uplr[d])
     
 @sio.event
 def connect():
