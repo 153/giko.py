@@ -16,10 +16,8 @@ def cmd(player, msg):
         elif msg[0] == "!craps":
             amt = 1
             if len(msg) > 2:
-                try:
-                    amt = int(msg[2])
-                except:
-                    pass
+                try: amt = int(msg[2])
+                except: pass
                 if amt < 1:
                     amt = 1
                 if msg[1] in ["win", "lose"]:
@@ -30,12 +28,9 @@ def cmd(player, msg):
                 if msg[1] in ["win", "lose"]:
                     output += play("deal", player, msg[1], 1)
                 else:
-                    try:
-                        amt = int(msg[1])
-                    except:
-                        pass
-                    if amt < 1:
-                        amt = 1
+                    try: amt = int(msg[1])
+                    except: pass
+                    if amt < 1: amt = 1
                     output += play("deal", player, "win", amt)
                     
             elif len(msg) == 1:
@@ -46,19 +41,27 @@ def cmd(player, msg):
                     "!craps <win/lose> (pick one), optionally "
                     "followed by a stake.")
         elif msg[0] == "!roll":
+            if not player in state:
+                return ["You need to start a game with !craps before you can place sidebets."]
             side_bets = ["field", "seven", "craps", "two", "three", "eleven", "twelve"]
             if len(msg) >= 2:
                 if msg[1] not in side_bets:
                     output.append("!roll <sidebet> <amt> -- side bets are "
-                                  "the field, seven (4:1), craps (7:1), two (30:1), "
+                                  "field, seven (4:1), craps (7:1), two (30:1), "
                                   "twelve (30:1), eleven (15:1), three (15:1) "
                                   "-- single roll bets with great payouts!")
                 else:
                     try:
                         sidebet = int(msg[2])
-                        if sidebet < 0: sidebet = 1
-                    except:
+                    except: sidebet = 1
+                    if sidebet < 1:
                         sidebet = 1
+                    if sidebet > bank.check_balance(player, 1):
+                        sidebet = bank.check_balance(player, 1)
+                    if sidebet < 1:
+                        bank.deposit(player, 5)
+                        sidebet = 1
+                    
                     output += play("roll", player, side=[msg[1], sidebet])
             else:
                 output += play("roll", player)
@@ -69,6 +72,7 @@ def play(mode="", player="", style="", amt=1, side=[]):
     global state
     output = []
 
+    bank.check_balance(player)
     try: amt = int(amt)
     except: amt = 1
 

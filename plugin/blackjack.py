@@ -20,10 +20,8 @@ def cmd(player, msg):
         if msg[0] == "!deal":
             amt = 1
             if len(msg) > 1:
-                try:
-                    amt = int(msg[1])
-                except:
-                    amt = 1
+                try: amt = int(msg[1])
+                except: amt = 1
             if amt < 1:
                 amt = 1
             output += play("deal", player, amt)
@@ -41,7 +39,8 @@ def play(mode="", player="", amt=1):
     global state
     output = []
     bj = False
-    
+
+    bank.check_balance(player)
     try: amt = int(amt)
     except: amt = 1
 

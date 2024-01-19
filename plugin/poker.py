@@ -32,13 +32,15 @@ def cmd(player, msg):
                 discard = " ".join(msg[1:])
                 output += play("discard", player, discard)
             else: 
-                output.append("Please type a list of space-seperated cards to discard, like !drop 0, !drop 1, !drop 3 5")
+                output += play("discard", player, "0")
+#                output.append("Please type a list of space-seperated cards to discard, like !drop 0, !drop 1, !drop 3 5")
     return output
 
 def play(mode="", player="", discard="", amt=1):
     global state
     output = []
 
+    bank.check_balance(player)
     try: amt = int(amt)
     except: amt = 1
 

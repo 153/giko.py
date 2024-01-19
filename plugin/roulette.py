@@ -23,6 +23,7 @@ def spin(player, bet, amt):
     output = []
     result = random.randint(0, 36)
 
+    bank.check_balance(player)
     try: amt = int(amt)
     except: amt = 1
 
