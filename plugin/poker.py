@@ -5,7 +5,7 @@ import copy
 from . import bank
 
 state = {}
-# {player: [hand, deck, amount]}
+# {player: [deck, hand, amount]}
 
 suits = {"hearts": "♥",
          "spades": "♠",
@@ -117,7 +117,8 @@ def check(player):
     matches = []
 
     scards = sorted(set((x, cards.count(x)) for x in cards if
-                        cards.count(x) >= 2))
+                        cards.count(x) >= 2), key= lambda x: x[1],
+                    reverse=True)
 
     if len(scards) == 1:
         if scards[0][1] == 2:
@@ -129,9 +130,10 @@ def check(player):
             matches.append("4ofkind")
 
     elif len(scards) > 1:
-        if scards[1][1] == 2:
+        print(scards)
+        if scards[0][1] == 2:
             matches.append("2pair")
-        elif scards[1][1] == 3:
+        elif scards[0][1] == 3:
             matches.append("full house")
             
     if len(matches) == 0:
