@@ -6,14 +6,11 @@ state = {}
 
 def cmd(player, msg):
     msg = msg.split()
-    commands = ["!craps", "!roll", "!help"]
+    commands = ["!craps", "!roll"]
     output = []
 
     if msg[0] in commands:
-        if msg[0] == "!help":
-            output.append("Craps commands: !craps <win/lose> <amt>, "
-                          "!roll <sidebet> <amt>")
-        elif msg[0] == "!craps":
+        if msg[0] == "!craps":
             amt = 1
             if len(msg) > 2:
                 try: amt = int(msg[2])

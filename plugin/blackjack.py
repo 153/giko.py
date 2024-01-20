@@ -31,8 +31,6 @@ def cmd(player, msg):
             output += play("stand", player)
         elif msg[0] == "!dd":
             output += play("dd", player)
-    elif msg[0] == "!help":
-        output.append("Blackjack commands: !deal <bet amount>, !hit, !stand, !dd (double down)")
     return output
 
 def play(mode="", player="", amt=1):

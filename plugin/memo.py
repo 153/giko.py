@@ -4,7 +4,7 @@ def cmd(player, msg):
     global outbox
     output = []
     msg = msg.split()
-    commands = ["!mail", "!help"]
+    commands = ["!mail"]
 
     if player in outbox:
         mc = len(outbox[player])
@@ -15,10 +15,7 @@ def cmd(player, msg):
         writememos()
             
     if msg[0] in commands:
-        if msg[0] == "!help":
-            output.append("Memo commands: !mail <username> || <message> "
-                          "(seperate username from message with || )")
-        elif msg[0] == "!mail":
+        if msg[0] == "!mail":
             output.append(sendmail(player, msg[1:]))
     return output
 

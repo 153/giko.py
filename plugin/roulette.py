@@ -3,15 +3,11 @@ from . import bank
 
 def cmd(player, msg):
     msg = msg.split()
-    commands = ["!spin", "!help"]
+    commands = ["!spin"]
     output = []
 
     if msg[0] in commands:
-        if msg[0] == "!help":
-            output.append("Roulette commands: !spin <bet> <amt>, "
-                          "where bets are 0-36, even/odd, "
-                          "low/high, first/second/third (dozens)")
-        elif msg[0] == "!spin":
+        if msg[0] == "!spin":
             if len(msg) == 2:
                 output += spin(player, msg[1], 1)
             elif len(msg) == 3:

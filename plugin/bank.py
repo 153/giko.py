@@ -18,7 +18,7 @@ for entry in bankfile:
 
 def cmd(player, msg):
     msg = msg.split()
-    bank_cmds = ["!wealth", "!balance", "!create", "!send", "!help"]
+    bank_cmds = ["!wealth", "!balance", "!create", "!send"]
     output = []
 
     if msg[0] in bank_cmds:
@@ -48,8 +48,6 @@ def cmd(player, msg):
                 return output
             print(player, msg[2], msg[1])
             output.append(send_money(player, msg[2], msg[1]))
-        elif msg[0] == "!help":
-            output.append("Bank commands: !wealth , !create , !balance <player> , !send <amount> <player>")
 
     return output
         

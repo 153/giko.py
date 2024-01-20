@@ -16,14 +16,11 @@ royals = {11: "J", 12: "Q", 13: "K", 1: "A"}
 
 def cmd(player, msg):
     msg = msg.split()
-    commands = ["!help", "!poker", "!drop"]
+    commands = ["!poker", "!drop"]
     output = []
 
     if msg[0] in commands:
-        if msg[0] == "!help":
-            output.append("Poker commands: !poker <amt>, "
-                          "!drop <cards> (like !drop 0, !drop 1 2")
-        elif msg[0] == "!poker":
+        if msg[0] == "!poker":
             try: amt = int(msg[1])
             except: amt = 1
             output += play("draw", player, [], amt)
