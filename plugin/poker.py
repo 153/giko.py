@@ -56,6 +56,7 @@ def play(mode="", player="", discard="", amt=1):
                           "begin a new game...")
             del state[player]
             output += play(mode, player, [], amt)
+            return output
         deck = {"hearts": [i+1 for i in range(13)],
                 "spades": [i+1 for i in range(13)],
                 "clubs": [i+1 for i in range(13)],
@@ -67,6 +68,10 @@ def play(mode="", player="", discard="", amt=1):
                       "enter some cards to discard (0 or 1-5)")
         
     elif mode == "discard":
+        if player not in state:
+            output.append(f"{player}, you need to start a game with !poker "
+                          "before you can discard cards.")
+            return output
         deck, hand = state[player][0], state[player][1]
         try:
             discard = [int(d) for d in discard.split(" ")]
