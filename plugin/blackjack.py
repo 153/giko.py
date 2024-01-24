@@ -197,6 +197,8 @@ def play(mode="", player="", amt=1):
         if len(state[player]) < 1:
             output.append("You need to start a hand.")
             return output
+        if len(state[player][0]) > 2:
+            return ["You can only double down on the turn your hand is dealt."]
         if (2 * state[player][3]) < bank.check_balance(player, 1):
             state[player][3] = state[player][3] * 2
             attempt = play("hit", player)
@@ -266,7 +268,7 @@ def cnt_total(player, bj=False):
             dealer += 10
         else:
             dealer += c[1]
-        if c[1] == 1:
+        if c[1] == 1 and ace == 0:
             ace = 1
     if (dealer < 17) and ace:
         dealer += 10
