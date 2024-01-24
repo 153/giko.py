@@ -2,19 +2,18 @@ import os
 
 bankfn = "./data/bank.txt"
 moneys = {}
-bankfile = []
 
-if not os.path.exists(bankfn):
-    with open(bankfn, "w") as bankfile:
-        bankfile.write("Archduke 9999")
-with open(bankfn, "r") as bankfile:
-    bankfile = bankfile.read().splitlines()
-
-for entry in bankfile:
-    entry = entry.split()
-    if len(entry) > 2:
-        entry = [" ".join(entry[:-1]), entry[-1]]
-    moneys[entry[0]] = int(entry[1])
+def ld():
+    if not os.path.exists(bankfn):
+        with open(bankfn, "w") as bankfile:
+            bankfile.write("Archduke 9999")
+    with open(bankfn, "r") as bankfile:
+        bankfile = bankfile.read().splitlines()
+    for entry in bankfile:
+        entry = entry.split()
+        if len(entry) > 2:
+            entry = [" ".join(entry[:-1]), entry[-1]]
+        moneys[entry[0]] = int(entry[1])
 
 def cmd(player, msg):
     msg = msg.split()
@@ -59,6 +58,7 @@ def write_file():
         newbank.write("\n".join(bankfile))
 
 def check_balance(player, silent=0):
+    ld()
     if player in moneys:
         if silent:
             return int(moneys[player])
@@ -68,6 +68,7 @@ def check_balance(player, silent=0):
     return add_entry(player)
     
 def add_entry(player, silent=0):
+    ld()
     if not player in moneys:
         moneys[player] = 20
         write_file()
@@ -77,14 +78,17 @@ def add_entry(player, silent=0):
     return "You already have an account and " + check_balance(player)
 
 def deposit(player, amt):
+    ld()
     moneys[player] += amt
     write_file()
 
 def deduct(player, amt):
+    ld()
     moneys[player] -= amt
     write_file()
         
 def send_money(sender="", target="", amt=0, silent=0):
+    ld()
     amt = int(amt)
     if amt < 1:
         return
@@ -109,10 +113,12 @@ def send_money(sender="", target="", amt=0, silent=0):
         return
 
 def wealth():
+    ld()
     index = [[m, moneys[m]] for m in moneys]
     index.sort(key = lambda x: x[1], reverse=True)
     index = index[:5]
     index = " / ".join([": ".join([i[0], str(i[1])]) for i in index])
     return "Top 5: " + index
 
+ld()
 print("Bank plugin loaded")
