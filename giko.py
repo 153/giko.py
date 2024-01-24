@@ -25,6 +25,7 @@ my_id = ""
 pid = ""
 api = ""
 anon_name = "Spy"
+anti_spy = True
 
 plugins = ["blackjack", "craps", "roulette", "poker", "bank", "quotes", "memo", "help"]
 
@@ -32,10 +33,13 @@ def main():
     global api
     server = "play.gikopoi.com"
     area = "for"
-    room = "nerd_office"
+    room = "bar"
     character = "naito_npc"
     name = "giko.py"
     password = ""
+
+    if len(sys.argv) > 1:
+        room = sys.argv[1]
 
     if "poipoi" in server:
         api = "/api"
@@ -147,6 +151,8 @@ def user_join(data):
             return
         if len(data['name']) == 0:
             user[1] = anon_name
+            if anti_spy:
+                send_message("Go to hell Spy")
         Users[user[0]] = user[1]
         tstamp = datetime.datetime.now().strftime("%H:%M")
         print(tstamp, "{} joined".format(user[1]))
@@ -188,6 +194,9 @@ def server_msg(event,namespace):
         namespace = namespace.replace("◇", "◆")
     tstamp = datetime.datetime.now().strftime("%H:%M")
     print('{} < {} > {}'.format(tstamp, author, namespace))
+
+    if author == anon_name:
+        return
     
     for i in plugins:
         cmd = getattr(eval(i), "cmd")
