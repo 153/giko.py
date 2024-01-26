@@ -26,8 +26,11 @@ pid = ""
 api = ""
 anon_name = "Spy"
 anti_spy = True
+ircmode = False
+ircroom = ""
 
-plugins = ["blackjack", "craps", "roulette", "poker", "bank", "quotes", "memo", "help"]
+plugins = ["blackjack", "craps", "roulette", "poker",
+           "bank", "quotes", "memo", "help"]
 
 def main():
     global api
@@ -39,7 +42,22 @@ def main():
     password = ""
 
     if len(sys.argv) > 1:
+        print(sys.argv)
         room = sys.argv[1]
+
+    if room == ircroom:
+        global ircmode
+        ircmode = True
+        
+        global ircrelay
+        from plugin import ircrelay
+
+        global plugins
+        plugins.append("ircrelay")
+
+        import threading
+        x = threading.Thread(target=get_irc_msgs)
+        x.start()
 
     if "poipoi" in server:
         api = "/api"
@@ -190,8 +208,6 @@ def server_msg(event,namespace):
     if len(namespace) == 0:
         return
     
-    if "◇" in namespace:
-        namespace = namespace.replace("◇", "◆")
     tstamp = datetime.datetime.now().strftime("%H:%M")
     print('{} < {} > {}'.format(tstamp, author, namespace))
 
@@ -212,7 +228,15 @@ def server_msg(event,namespace):
             for o in output:
                 send_message(o)
                 time.sleep(1)
-
+                
+def get_irc_msgs():
+    while True:
+        if ircrelay.lastread < ircrelay.modified:
+            qdmsgs = ircrelay.queued_msgs()
+            for m in qdmsgs:
+                sio.emit("user-msg", m)
+                time.sleep(1)
+                
 
 if __name__ == "__main__":
     main()

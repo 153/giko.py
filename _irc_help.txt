@@ -1,0 +1,36 @@
+How to get IRC <---> Gikopoi relay working:
+
+1. Download and compile ii, the suckless IRC client
+   https://tools.suckless.org/ii/
+
+2. Connect ii to an IRC network and channel. This creates a
+   directory and files somewhere like
+        ./networkname/channelname/in
+        ./networkname/channelname/out
+   If you don't know how to do that, after you compile ii,
+   drop the binary in giko.py/irc/ , then modify and run
+   the included ./irc/ircrelay.sh script -- replace SOMEBOTNAME
+   and IRC.SOMEIRCNETWORK.COM with what you want to call
+   your IRC bot and what network you want it to connect to.
+   After it connects to your network, write "/j #somechannel"
+   to ./networkname/in to join that channel.
+
+   Wait until ii connects to your network and joins it before
+   running giko.py .
+
+3. The way ii works, is: new messages written to "in" get
+   sent to IRC by ii ; ii also adds new lines to "out" when
+   it receives messages from the IRC channel (message sent,
+   user joins, blah blah)
+
+   .... make sure that the giko.py script can read "out"
+   and write to the "in" file or you won't get any bridge working
+
+4. Configure ircrelay.py with the locations of ii's channel
+   in and channel out files and the name of your ii user;
+   ircrelay handles sending and loading messages automagically.
+
+5. In giko.py , modify ircroom to be a valid gikopoi room ID.
+   Now, if you launch your giko.py with everything configured
+   correctly, and you have it join your ircroom, the relay should
+   work!
