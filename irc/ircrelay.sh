@@ -1,1 +1,1 @@
-./ii -n SOMEBOTNAME -i . -s irc.rizon.net
+./ii -n SOMEBOTNAME -i . -s IRC.SOMEIRCNETWORK.COM
