@@ -17,6 +17,8 @@ lastread = int(time.time())
 def cmd(player, msg):
     if msg.startswith("!"):
         return
+    msg = msg.replace("\n", " ")
+    msg = msg.replace("\r", " ")
     with open(infn, "a") as sender:
         sender.write(f"<{player}> {msg} \n")
 
