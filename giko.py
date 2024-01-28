@@ -16,6 +16,7 @@ from plugin import craps
 from plugin import roulette
 from plugin import poker
 from plugin import help
+from plugin import mod
 
 sio = socketio.Client()
 session = requests.Session()
@@ -27,10 +28,10 @@ api = ""
 anon_name = "Spy"
 anti_spy = True
 ircmode = False
-ircroom = ""
+ircroom = "bar"
 
 plugins = ["blackjack", "craps", "roulette", "poker",
-           "bank", "quotes", "memo", "help"]
+           "bank", "quotes", "memo", "help", "mod"]
 
 def main():
     global api

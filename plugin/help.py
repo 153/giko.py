@@ -17,17 +17,20 @@ helptable = {"blackjack":
              "!send <amount> <player>",
 
              "quotes":
-             "Quote commands: !dhamma, !random, !add <quote>",
+             "Quote commands: !dhamma, !bible, !random, !8ball, !fortune, !add <quote>",
 
              "memo":
              "Memo commands: !mail <username> || <message> "
-             "(seperate username from message with || )"}
+             "(seperate username from message with || )",
+
+             "kick":
+             "Kick commands: !kickname <name>, !kickid <id>"}
 
 def cmd(player, msg):
     msg = msg.split()
     output = []
     topics = ["blackjack", "craps", "roulette", "poker",
-              "bank", "quotes", "memo"]
+              "bank", "quotes", "memo", "kick"]
     if msg[0] == "!help":
         if len(msg) == 1:
             output.append("List of topics (type !help <topic>): " \
