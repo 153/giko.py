@@ -8,8 +8,10 @@ with open("secret.txt", "r") as secret:
 
 site = "https://play.gikopoi.com/"
 ulist = site + "user-list"
-kick = site + "kick"
+oldkick = site + "kick"
+kick = site + "kick-ip"
 auth = {"pwd": secret}
+oldauth = {"pwd": secret}
 whitelist = ["giko.py", "Archduke", "issue maker"]
 white_id = []
 
@@ -19,7 +21,7 @@ ips = {}
 def cmd(player, msg):
     output = []
     msg2 = msg.split()
-    commands = ["!kickname", "!kickid"]
+    commands = ["!kickname", "!kickid", "!test"]
     if msg2[0] in commands:
         target = msg[(len(msg2[0]) + 1):]
         
@@ -27,10 +29,12 @@ def cmd(player, msg):
             output.append(handle_user(player, "kick", target))
         elif msg2[0] == "!kickid":
             output.append(handle_user(player, "kick", None, target))
+        if msg2[0] == "!test":
+            get_users()
+            print(users)
+            print("\n\n")
+            print(ips)
         return output 
-
-def main():
-    get_users()
     
 def get_users():
     global white_id
@@ -52,14 +56,14 @@ def handle_user(player, mode, username="", uid=""):
         if username in whitelist:
             return "Sorry, that user is whitelisted."
         for u in users:
-            if users[u] == username:
+            if users[u][0] == username:
                 attempted_user.append(u)
         if len(attempted_user) == 0:
             return "Sorry, I was unable to find someone with that exact name."
         elif len(attempted_user) > 1:
             return "There are multiple people with that name. " \
-                + "Please use ban-by-id feature rather than " \
-                + "ban-by-name."
+                + "Please use kick-by-id feature rather than " \
+                + "kick-by-name."
         else:
             attempted_user = attempted_user[0]
     elif len(uid):
@@ -76,15 +80,22 @@ def handle_user(player, mode, username="", uid=""):
 
 def kick_user(player, uid):
     balance = bank.check_balance(player, 1)
-    auth[uid] = True
+    for i in users[uid][1]:
+        auth[i] = True
+    oldauth[uid] = True
     if uid not in users:
         return "Unspecified error"
     if balance < 100:
         return f"Sorry {player}, you need at least 100 gikocoins to " \
-            + f"ban someone. You only have {balance} gikocoins."
+            + f"kick someone. You only have {balance} gikocoins."
     bank.deduct(player, 100)
+    kicker1 = requests.post(oldkick, data=oldauth)
     kicker = requests.post(kick, data=auth)
-    return f"{player} successfully kicked {users[uid]} and now has " \
+    print(kicker1.text)
+    print("old method ^")
+    print(kicker.text)
+    print("new method ^")
+    return f"{player} successfully kicked {users[uid][0]} and now has " \
     + f"{balance - 100} gikocoins remaining."
 
 def fmt_userlist(data):
@@ -96,12 +107,17 @@ def fmt_userlist(data):
         pattern = "name='([a-z0-9\-]+)'"
         name = d.split("  &lt;")[1].split("&gt;")[-2]
         ip = d.split("streaming: ")[-1].split("</label>")[0][2:]
-        uid = re.findall(pattern, d)[0]
-        if ip in ips:
-            ips[ip].append([uid, name])
+        if "," in ip:
+            ip = ip.split(",")
         else:
-            ips[ip] = [[uid, name]]
-        users[uid] = name
+            ip = [ip]
+        uid = re.findall(pattern, d)[0]
+        for i in ip:
+            if i in ips:
+                ips[i].append([uid, name])
+            else:
+                ips[i] = [[uid, name]]
+        users[uid] = [name, ip]
 
 print("Mod plugin loaded.")
 

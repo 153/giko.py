@@ -8,7 +8,7 @@ import threading
 outfn = "./irc/irc.rizon.net/#gikopoi/out"
 infn = "./irc/irc.rizon.net/#gikopoi/in"
 
-NICK = "gikobot"
+NICK = "GikoBot"
 logfile = []
 outq = {}
 modified = 0
@@ -59,6 +59,7 @@ def printer():
             elif i[11] == "<":
                 i = i.split()
                 outq[int(i[0])] = " ".join(i[1:])
+
                 
             
 b = threading.Thread(target=printer)

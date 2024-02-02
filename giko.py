@@ -17,6 +17,7 @@ from plugin import roulette
 from plugin import poker
 from plugin import help
 from plugin import mod
+from plugin import finance
 
 sio = socketio.Client()
 session = requests.Session()
@@ -31,7 +32,7 @@ ircmode = False
 ircroom = "bar"
 
 plugins = ["blackjack", "craps", "roulette", "poker",
-           "bank", "quotes", "memo", "help", "mod"]
+           "bank", "quotes", "memo", "help", "mod", "finance"]
 
 def main():
     global api
@@ -235,7 +236,7 @@ def get_irc_msgs():
         if ircrelay.lastread < ircrelay.modified:
             qdmsgs = ircrelay.queued_msgs()
             for m in qdmsgs:
-                sio.emit("user-msg", m)
+                send_message(m)
                 time.sleep(1)
                 
 

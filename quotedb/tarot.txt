@@ -1,0 +1,44 @@
+The Fool :: innocence, new beginnings, free spirit
+The Fool (R) :: recklessness, taken advantage of, inconsideration
+The Magician :: willpower, desire, creation, manifestation
+The Magician (R) :: trickery, illusions, out of touch
+The High Priestess :: intuitive, unconscious, inner voice
+The High Priestess (R) :: lack of center, lost inner voice, repressed feelings
+The Empress :: motherhood, fertility, nature
+The Empress (R) :: dependence, smothering, emptiness, nosiness
+The Emperor :: authority, structure, control, fatherhood
+The Emperor (R) :: tyranny, rigidity, coldness
+The Hierophant :: tradition, conformity, morality, ethics
+The Hierophant (R) :: rebellion, subversiveness, new approaches
+The Lovers :: partnerships, duality, union
+The Lovers (R) :: loss of balance, one-sidedness, disharmony
+The Chariot :: direction, control, willpower
+The Chariot (R) :: lack of control, lack of direction, aggression
+Strength :: inner strength, bravery, compassion, focus
+Strength (R) :: self doubt, weakness, insecurity
+The Hermit :: contemplation, search for truth, inner guidance
+The Hermit (R) :: loneliness, isolation, lost your way
+The Wheel of Fortune :: change, cycles, inevitable fate
+The Wheel of Fortune (R) :: no control, clinging to control, bad luck
+Justice :: cause and effect, clarity, truth
+Justice (R) :: dishonesty, unaccountability, unfairness
+The Hanged Man :: sacrifice, release, martyrdom
+The Hanged Man (R) :: stalling, needless sacrifice, fear of sacrifice
+Death :: end of cycle, beginnings, change, metamorphosis
+Death (R) :: fear of change, holding on, stagnation, decay
+Temperance :: middle path, patience, finding meaning
+Temperance (R) :: extremes, excess, lack of balance
+The Devil :: addiction, materialism, playfulness
+The Devil (R) :: freedom, release, restoring control
+The Tower :: sudden upheaval, broken pride, disaster
+The Tower (R) :: disaster avoided, delayed disaster, fear of suffering
+The Star :: hope, faith, rejuvenation
+The Star (R) :: faithlessness, discouragement, insecurity
+The Moon :: unconscious, illusions, intuition
+The Moon (R) :: confusion, fear, misinterpretation
+The Sun :: joy, success, celebration, positivity
+The Sun (R) :: negativity, depression, sadness
+Judgement :: reflection, reckoning, awakening
+Judgement (R) :: lack of self awareness, doubt, self loathing
+The World :: fulfillment, harmony, completion
+The World (R) :: incompletion, no closure 
