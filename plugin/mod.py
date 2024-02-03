@@ -77,8 +77,9 @@ def ban_log(ip="", name="", player=""):
     with open("data/bans.txt", "w") as banlist:
         banlist = banlist.write(bans)
 
-def ban_list():
+def ban_list(loud=1):
     output = []
+    blist = []
     with open("./data/bans.txt", "r") as bans:
         bans = bans.read().splitlines()
     for n, b in enumerate(bans):
@@ -87,9 +88,13 @@ def ban_list():
         if len(b[0]) > 3:
             b[0][2] = " ".join(b[0][2:])
         b = [*b[0], b[1]]
+        blist.append(b)
         output.append(f"(#{n+1}) {b[2]}, "
                       f"{time_since(b[1])} ago")
-    return " ".join(output)
+    if loud:
+        return " ".join(output)
+    else:
+        return blist
 
 def ban_info(banno):
     try:
@@ -199,6 +204,10 @@ def ban_user(player, uid):
         ban_log(i, users[uid][0], player)
     return f"{player} successfully banned {users[uid][0]} and now has " \
     + f"{balance - 1000} gikocoins remaining."
+
+def unban_user(player, banned):
+    blist = ban_list(0)
+    print(blist)
 
 def fmt_userlist(data):
     global users
