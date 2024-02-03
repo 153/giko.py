@@ -26,6 +26,10 @@ helptable = {"blackjack":
              "kick":
              "Kick commands: !kickname <name>, !kickid <id>",
 
+             "ban":
+             "Ban commands: !banname <name>, !banid <id>, "
+             "!banlist, !baninfo <num>",
+
              "finance":
              "Finance commands: !stock <ticker>, !convert <value> <cur1> <cur2> (use 2 letter country code)"
              }

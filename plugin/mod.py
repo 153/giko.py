@@ -1,3 +1,4 @@
+import copy
 import re
 import requests
 import time
@@ -9,11 +10,9 @@ with open("secret.txt", "r") as secret:
 
 site = "https://play.gikopoi.com/"
 ulist = site + "user-list"
-oldkick = site + "kick"
 kick = site + "kick-ip"
 ban = site + "ban-ip"
-auth = {"pwd": secret}
-oldauth = {"pwd": secret}
+login = {"pwd": secret}
 whitelist = ["giko.py", "Archduke", "issue maker"]
 white_id = []
 
@@ -23,7 +22,8 @@ ips = {}
 def cmd(player, msg):
     output = []
     msg2 = msg.split()
-    commands = ["!kickname", "!kickid", "!banname", "!banid", "!test"]
+    commands = ["!kickname", "!kickid", "!banname", "!banid",
+                "!banlist", "!baninfo", "!test"]
     if msg2[0] in commands:
         target = msg[(len(msg2[0]) + 1):]
         
@@ -35,6 +35,13 @@ def cmd(player, msg):
             output.append(handle_user(player, "ban", target))
         elif msg2[0] == "!banid":
             output.append(handle_user(player, "ban", None, target))
+        elif msg2[0] == "!banlist":
+            output.append(ban_list())
+        elif msg2[0] == "!baninfo":
+            if len(msg2) > 1:
+                output.append(ban_info(msg2[1]))
+            else:
+                output.append(ban_list())
         if msg2[0] == "!test":
             get_users()
             print(users)
@@ -42,19 +49,79 @@ def cmd(player, msg):
             print(ips)
         return output
 
+def time_since(bantime):
+    now = int(time.time())
+    diff = now - int(bantime)
+    consts = [1, 1, 60, 3600, 86400, 604800, 2629746, 31556952]
+    abbrv  = ['', 's', 'm', 'h', 'd', 'w', 'm', 'y']
+    output = []
+    for n, i in enumerate(consts):
+        if i > diff:
+            tmp = diff
+            output.append(str(tmp//consts[n-1]) + abbrv[n-1])
+            if abbrv[n-1] == 's':
+                break
+            while tmp >= consts[n-1]:
+                tmp -= consts[n-1]
+            if tmp//consts[n-2] != 0:
+                output.append(str(tmp//consts[n-2]) + abbrv[n-2])
+            break
+    return "".join(output)
+
 def ban_log(ip="", name="", player=""):
     now = str(int(time.time()))
     with open("data/bans.txt", "r") as bans:
         bans = bans.read().splitlines()
-    bans.append(" ".join([ip, now, name, "◆", player]))
+    bans.append(" ".join([ip, now, name, "\t", player]))
     bans = "\n".join(bans)
     with open("data/bans.txt", "w") as banlist:
         banlist = banlist.write(bans)
+
+def ban_list():
+    output = []
+    with open("./data/bans.txt", "r") as bans:
+        bans = bans.read().splitlines()
+    for n, b in enumerate(bans):
+        b = b.split("\t")
+        b[0] = b[0].split()
+        if len(b[0]) > 3:
+            b[0][2] = " ".join(b[0][2:])
+        b = [*b[0], b[1]]
+        output.append(f"(#{n+1}) {b[2]}, "
+                      f"{time_since(b[1])} ago")
+    return " ".join(output)
+
+def ban_info(banno):
+    try:
+        banno = int(banno)
+    except:
+        return "Please enter a valid integer, eg 1, 5, 11, etc"
+
+    bt = []
     
+    with open("./data/bans.txt", "r") as bans:
+        bans = bans.read().splitlines()
+    if banno > len(bans):
+        return "We don't have that many bans in our database: " \
+            + f"we only have {len(bans)} bans, not {banno}."
+    for n, b in enumerate(bans):
+        b = b.split("\t")
+        b[0] = b[0].split()
+        if len(b[0]) > 3:
+            b[0][2] = " ".join(b[0][2:])
+        b = [*b[0], b[1]]
+        if (n+1) == banno:
+            bt = b
+            break
+        
+    bt = f"(#{banno}) {bt[2]} was banned " \
+        + f"{time_since(b[1])} ago by {b[3]}"
+    return bt
+
     
 def get_users():
     global white_id
-    
+    auth = copy.deepcopy(login)
     r = requests.post(ulist, data=auth)
     fmt_userlist(r.text)
     
@@ -98,26 +165,25 @@ def handle_user(player, mode, username="", uid=""):
 
 def kick_user(player, uid):
     balance = bank.check_balance(player, 1)
+    auth = copy.deepcopy(login)
+    
     for i in users[uid][1]:
         auth[i] = True
-    oldauth[uid] = True
     if uid not in users:
         return "Unspecified error"
     if balance < 100:
         return f"Sorry {player}, you need at least 100 gikocoins to " \
             + f"kick someone. You only have {balance} gikocoins."
     bank.deduct(player, 100)
-    kicker1 = requests.post(oldkick, data=oldauth)
     kicker = requests.post(kick, data=auth)
-    print(kicker1.text)
-    print("old method ^")
     print(kicker.text)
-    print("new method ^")
     return f"{player} successfully kicked {users[uid][0]} and now has " \
     + f"{balance - 100} gikocoins remaining."
 
 def ban_user(player, uid):
     balance = bank.check_balance(player, 1)
+    auth = copy.deepcopy(login)
+        
     for i in users[uid][1]:
         auth[i] = True
     oldauth[uid] = True
@@ -156,4 +222,3 @@ def fmt_userlist(data):
         users[uid] = [name, ip]
 
 print("Mod plugin loaded.")
-
