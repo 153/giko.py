@@ -1,5 +1,6 @@
 import re
 import requests
+import time
 
 from . import bank
 
@@ -10,6 +11,7 @@ site = "https://play.gikopoi.com/"
 ulist = site + "user-list"
 oldkick = site + "kick"
 kick = site + "kick-ip"
+ban = site + "ban-ip"
 auth = {"pwd": secret}
 oldauth = {"pwd": secret}
 whitelist = ["giko.py", "Archduke", "issue maker"]
@@ -21,7 +23,7 @@ ips = {}
 def cmd(player, msg):
     output = []
     msg2 = msg.split()
-    commands = ["!kickname", "!kickid", "!test"]
+    commands = ["!kickname", "!kickid", "!banname", "!banid", "!test"]
     if msg2[0] in commands:
         target = msg[(len(msg2[0]) + 1):]
         
@@ -29,12 +31,26 @@ def cmd(player, msg):
             output.append(handle_user(player, "kick", target))
         elif msg2[0] == "!kickid":
             output.append(handle_user(player, "kick", None, target))
+        elif msg2[0] == "!banname":
+            output.append(handle_user(player, "ban", target))
+        elif msg2[0] == "!banid":
+            output.append(handle_user(player, "ban", None, target))
         if msg2[0] == "!test":
             get_users()
             print(users)
             print("\n\n")
             print(ips)
-        return output 
+        return output
+
+def ban_log(ip="", name="", player=""):
+    now = str(int(time.time()))
+    with open("data/bans.txt", "r") as bans:
+        bans = bans.read().splitlines()
+    bans.append(" ".join([ip, now, name, "◆", player]))
+    bans = "\n".join(bans)
+    with open("data/bans.txt", "w") as banlist:
+        banlist = banlist.write(bans)
+    
     
 def get_users():
     global white_id
@@ -77,6 +93,8 @@ def handle_user(player, mode, username="", uid=""):
     else:
         if mode == "kick":
             return kick_user(player, attempted_user)
+        elif mode == "ban":
+            return ban_user(player, attempted_user)
 
 def kick_user(player, uid):
     balance = bank.check_balance(player, 1)
@@ -97,6 +115,24 @@ def kick_user(player, uid):
     print("new method ^")
     return f"{player} successfully kicked {users[uid][0]} and now has " \
     + f"{balance - 100} gikocoins remaining."
+
+def ban_user(player, uid):
+    balance = bank.check_balance(player, 1)
+    for i in users[uid][1]:
+        auth[i] = True
+    oldauth[uid] = True
+    if uid not in users:
+        return "Unspecified error"
+    if balance < 1000:
+        return f"Sorry {player}, you need at least 1000 gikocoins to " \
+            + f"ban someone. You only have {balance} gikocoins."
+    bank.deduct(player, 1000)
+    kicker = requests.post(ban, data=auth)
+    print(kicker.text)
+    for i in users[uid][1]:
+        ban_log(i, users[uid][0], player)
+    return f"{player} successfully banned {users[uid][0]} and now has " \
+    + f"{balance - 1000} gikocoins remaining."
 
 def fmt_userlist(data):
     global users
