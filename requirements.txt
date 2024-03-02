@@ -1,3 +1,5 @@
 python-socketio
 requests
 websocket-client
+pytube
+Mastodon.py

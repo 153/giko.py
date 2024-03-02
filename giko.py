@@ -18,6 +18,8 @@ from plugin import poker
 from plugin import help
 from plugin import mod
 from plugin import finance
+from plugin import youtube
+from plugin import tweet
 
 sio = socketio.Client()
 session = requests.Session()
@@ -32,7 +34,8 @@ ircmode = False
 ircroom = "bar"
 
 plugins = ["blackjack", "craps", "roulette", "poker",
-           "bank", "quotes", "memo", "help", "mod", "finance"]
+           "bank", "quotes", "memo", "help", "mod", "finance",
+           "youtube", "tweet"]
 
 def main():
     global api

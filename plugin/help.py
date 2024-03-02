@@ -34,7 +34,10 @@ helptable = {"blackjack":
              "!banlist, !baninfo <num>",
 
              "finance":
-             "Finance commands: !stock <ticker>, !convert <value> <cur1> <cur2> (use 2 letter country code)"
+             "Finance commands: !stock <ticker>, !convert <value> <cur1> <cur2> (use 2 letter country code)",
+
+             "tweet":
+             "!tweet <msg> - Post a message to https://poa.st/@gikobot",
              }
 
 def cmd(player, msg):

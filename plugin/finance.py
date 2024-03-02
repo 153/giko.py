@@ -74,8 +74,7 @@ def stocks(corp):
     yday = datetime.now() - timedelta(2)
     yday = datetime.strftime(yday, "%Y-%m-%d")
     url = "https://api.polygon.io/v2/aggs/ticker/"
-    url += corp
-    url += f"/range/1/day/{yday}/{yday}"
+    url += corp + "/prev"
     url += "?apiKey=" + apikey
     print(url)
     
