@@ -3,3 +3,4 @@ requests
 websocket-client
 pytube
 Mastodon.py
+wikipedia

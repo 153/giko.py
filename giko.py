@@ -20,6 +20,7 @@ from plugin import mod
 from plugin import finance
 from plugin import youtube
 from plugin import tweet
+from plugin import wiki
 
 sio = socketio.Client()
 session = requests.Session()
@@ -31,11 +32,11 @@ api = ""
 anon_name = "Spy"
 anti_spy = True
 ircmode = False
-ircroom = "bar"
+ircroom = "lounge"
 
 plugins = ["blackjack", "craps", "roulette", "poker",
            "bank", "quotes", "memo", "help", "mod", "finance",
-           "youtube", "tweet"]
+           "youtube", "tweet", "wiki"]
 
 def main():
     global api
@@ -44,7 +45,7 @@ def main():
     room = "bar"
     character = "naito_npc"
     name = "giko.py"
-    password = ""
+    password = "npc"
 
     if len(sys.argv) > 1:
         print(sys.argv)
@@ -216,7 +217,7 @@ def server_msg(event,namespace):
     tstamp = datetime.datetime.now().strftime("%H:%M")
     print('{} < {} > {}'.format(tstamp, author, namespace))
 
-    if author == anon_name:
+    if (author == anon_name) and anti_spy:
         return
     
     for i in plugins:

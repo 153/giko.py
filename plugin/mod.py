@@ -120,7 +120,7 @@ def ban_info(banno):
             break
         
     bt = f"(#{banno}) {bt[2]} was banned " \
-        + f"{time_since(b[1])} ago by {b[3]}"
+        + f"{time_since(b[1])} ago by {bt[-1]}"
     return bt
 
     
@@ -191,7 +191,7 @@ def ban_user(player, uid):
         
     for i in users[uid][1]:
         auth[i] = True
-    oldauth[uid] = True
+
     if uid not in users:
         return "Unspecified error"
     if balance < 1000:

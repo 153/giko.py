@@ -38,6 +38,8 @@ helptable = {"blackjack":
 
              "tweet":
              "!tweet <msg> - Post a message to https://poa.st/@gikobot",
+             "wiki":
+             "!wiki <topic> - Get wikipedia information about a topic",
              }
 
 def cmd(player, msg):
