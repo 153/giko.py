@@ -17,6 +17,7 @@ Current bot plugins:
  * Quote - get a random quote from a text file (samples included)
  * Irc Relay - see _irc_help.txt for more info
  * Tweet - post a message to a Mastodon server
+ * Youtube - get title/duration of linked YouTube videos
  * Wiki - get info about a wikipedia page
 
 No copyright - public domain - do anything you want with this code
