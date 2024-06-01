@@ -10,7 +10,7 @@ def cmd(author, msg):
     except:
         return
     leng = length(video.length)
-    out = str(f"{video.title} [{leng}]")
+    out = [str(f"{video.title} [{leng}]")]
     return out
 
 def length(vidl):

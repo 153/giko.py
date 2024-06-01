@@ -5,7 +5,7 @@ def cmd(author, msg):
     if msg.startswith("!tweet"):
         msg = msg[7:]
         mastodon.toot(msg)
-        return("It has been posted. https://poa.st/@gikobot")
+        return(["It has been posted. https://poa.st/@gikobot"])
 
 def setup():
     Mastodon.create_app(

@@ -30,9 +30,9 @@ my_id = ""
 pid = ""
 api = ""
 anon_name = "Spy"
-anti_spy = True
+anti_spy = False
 ircmode = False
-ircroom = "lounge"
+ircroom = "null"
 
 plugins = ["blackjack", "craps", "roulette", "poker",
            "bank", "quotes", "memo", "help", "mod", "finance",
@@ -42,7 +42,7 @@ def main():
     global api
     server = "play.gikopoi.com"
     area = "for"
-    room = "bar"
+    room = "radio_gakuya"
     character = "naito_npc"
     name = "giko.py"
     password = "npc"

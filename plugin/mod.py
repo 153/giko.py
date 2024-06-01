@@ -32,8 +32,10 @@ def cmd(player, msg):
         elif msg2[0] == "!kickid":
             output.append(handle_user(player, "kick", None, target))
         elif msg2[0] == "!banname":
+            return False
             output.append(handle_user(player, "ban", target))
         elif msg2[0] == "!banid":
+            return False
             output.append(handle_user(player, "ban", None, target))
         elif msg2[0] == "!banlist":
             output.append(ban_list())
