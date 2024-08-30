@@ -19,8 +19,9 @@ from plugin import help
 from plugin import mod
 from plugin import finance
 from plugin import youtube
-from plugin import tweet
 from plugin import wiki
+from plugin import seen
+from plugin import tweet
 
 sio = socketio.Client()
 session = requests.Session()
@@ -36,7 +37,7 @@ ircroom = "null"
 
 plugins = ["blackjack", "craps", "roulette", "poker",
            "bank", "quotes", "memo", "help", "mod", "finance",
-           "youtube", "tweet", "wiki"]
+           "youtube", "tweet", "wiki", "seen"]
 
 def main():
     global api
@@ -136,6 +137,7 @@ def get_users(s:requests.Session, server, area, room):
             Users[user['id']] = user['name']
             if len(user['name']) == 0:
                 Users[user['id']] = anon_name
+            seen.upd(Users[user['id']])
 
 def get_username(userid):
     try:
@@ -180,6 +182,7 @@ def user_join(data):
         Users[user[0]] = user[1]
         tstamp = datetime.datetime.now().strftime("%H:%M")
         print(tstamp, "{} joined".format(user[1]))
+        seen.upd(user[1])
         
     except Exception as ex:
         print(ex)
@@ -193,6 +196,7 @@ def user_leave(data):
         global Users
         tstamp = datetime.datetime.now().strftime("%H:%M")
         print(tstamp, "{} left".format(Users[data]))
+        seen.upd(Users[data])        
         del Users[data]
         
     except Exception as ex:
