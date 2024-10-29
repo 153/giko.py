@@ -43,7 +43,7 @@ def main():
     global api
     server = "play.gikopoi.com"
     area = "for"
-    room = "radio_gakuya"
+    room = "bar"
     character = "naito_npc"
     name = "giko.py"
     password = "npc"
@@ -137,7 +137,8 @@ def get_users(s:requests.Session, server, area, room):
             Users[user['id']] = user['name']
             if len(user['name']) == 0:
                 Users[user['id']] = anon_name
-            seen.upd(Users[user['id']])
+            if len(Users[user['id']].strip()):
+                seen.upd(Users[user['id']])
 
 def get_username(userid):
     try:
@@ -182,7 +183,8 @@ def user_join(data):
         Users[user[0]] = user[1]
         tstamp = datetime.datetime.now().strftime("%H:%M")
         print(tstamp, "{} joined".format(user[1]))
-        seen.upd(user[1])
+        if len(user[1].strip()):
+            seen.upd(user[1])
         
     except Exception as ex:
         print(ex)
@@ -196,7 +198,8 @@ def user_leave(data):
         global Users
         tstamp = datetime.datetime.now().strftime("%H:%M")
         print(tstamp, "{} left".format(Users[data]))
-        seen.upd(Users[data])        
+        if len(Users[data].strip()):
+            seen.upd(Users[data])        
         del Users[data]
         
     except Exception as ex:

@@ -1,6 +1,6 @@
 python-socketio
 requests
 websocket-client
-pytube
+pytubefix
 Mastodon.py
 wikipedia

@@ -1,5 +1,5 @@
 import time
-from pytube import YouTube
+from pytubefix import YouTube
 
 def cmd(author, msg):
     if "youtu.be" not in msg:
