@@ -214,10 +214,6 @@ def ban_user(player, uid):
 
 def unban_user(player, banned):
     blist = ban_list(0)
-    # post unban
-    # pwd = pwd
-    # name ip
-    # id ip
     auth = copy.deepcopy(login)
     print(blist)
     
@@ -225,6 +221,7 @@ def unban_user(player, banned):
         banned = int(banned) - 1
     except:
         return "Syntax: !unban <num> (see !banlist)"
+    
     if (banned < 0) or (banned >= len(blist)):
         banned = 0
     buser = blist[banned]
