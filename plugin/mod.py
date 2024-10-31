@@ -12,6 +12,7 @@ site = "https://play.gikopoi.com/"
 ulist = site + "user-list"
 kick = site + "kick-ip"
 ban = site + "ban-ip"
+unban = site + "unban"
 login = {"pwd": secret}
 whitelist = ["giko.py", "Archduke", "issue maker"]
 white_id = []
@@ -23,7 +24,7 @@ def cmd(player, msg):
     output = []
     msg2 = msg.split()
     commands = ["!kickname", "!kickid", "!banname", "!banid",
-                "!banlist", "!baninfo", "!test"]
+                "!banlist", "!baninfo", "!test", "!unban"]
     if msg2[0] in commands:
         target = msg[(len(msg2[0]) + 1):]
         
@@ -42,6 +43,11 @@ def cmd(player, msg):
                 output.append(ban_info(msg2[1]))
             else:
                 output.append(ban_list())
+        elif msg2[0] == "!unban":
+            if len(msg2) > 1:
+                output.append(unban_user(player, msg2[1]))
+            else:
+                output.append("Please specify a ban number via !banlist")
         if msg2[0] == "!test":
             get_users()
             print(users)
@@ -88,6 +94,7 @@ def ban_list(loud=1):
         if len(b[0]) > 3:
             b[0][2] = " ".join(b[0][2:])
         b = [*b[0], b[1]]
+        b = [x.strip() for x in b]
         blist.append(b)
         output.append(f"(#{n+1}) {b[2]}, "
                       f"{time_since(b[1])} ago")
@@ -207,7 +214,40 @@ def ban_user(player, uid):
 
 def unban_user(player, banned):
     blist = ban_list(0)
+    # post unban
+    # pwd = pwd
+    # name ip
+    # id ip
+    auth = copy.deepcopy(login)
     print(blist)
+    
+    try:
+        banned = int(banned) - 1
+    except:
+        return "Syntax: !unban <num> (see !banlist)"
+    if (banned < 0) or (banned >= len(blist)):
+        banned = 0
+    buser = blist[banned]
+    
+    balance = bank.check_balance(player, 1)
+    if balance < 50:
+        return f"Sorry {player}, you need at least 50 gikocoins to " \
+                 + f"unban someone. You only have {balance} gikocoins."
+    bank.deduct(player, 50)
+    
+    print(buser)
+
+    bip = buser[0]
+    auth[bip] = True
+    unbanner = requests.post(unban, data=auth)
+    print(unbanner.text)
+    
+    del blist[banned]
+    newb = "\n".join([" ".join([*i[:3], "\t", i[3]]) for i in blist])
+    with open("./data/bans.txt", "w") as bans:
+        bans.write(newb)
+    
+    return f"{player} has unbanned {buser[2]}, !banlist has been updated"
 
 def fmt_userlist(data):
     global users
