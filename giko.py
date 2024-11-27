@@ -22,6 +22,7 @@ from plugin import youtube
 from plugin import wiki
 from plugin import seen
 from plugin import tweet
+from plugin import metadata
 
 sio = socketio.Client()
 session = requests.Session()
@@ -37,7 +38,7 @@ ircroom = "null"
 
 plugins = ["blackjack", "craps", "roulette", "poker",
            "bank", "quotes", "memo", "help", "mod", "finance",
-           "youtube", "tweet", "wiki", "seen"]
+           "youtube", "tweet", "wiki", "seen", "metadata"]
 
 def main():
     global api

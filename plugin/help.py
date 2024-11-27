@@ -31,7 +31,7 @@ helptable = {"blackjack":
 
              "ban":
              "Ban commands: !banname <name>, !banid <id>, "
-             "!banlist, !baninfo <num>",
+             "!banlist, !baninfo <num>, !unban <num>",
 
              "finance":
              "Finance commands: !stock <ticker>, !convert <value> <cur1> <cur2> (use 2 letter country code)",
@@ -44,6 +44,9 @@ helptable = {"blackjack":
 
              "seen":
              "!seen <player> - See when someone last logged on / logged off",
+
+             "runes":
+             "!futhark - pull a futhark rune",
              }
 
 def cmd(player, msg):

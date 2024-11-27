@@ -2,7 +2,7 @@ import random
 
 def cmd(author, msg):
     msg = msg.split()
-    commands = ["!dhamma", "!random", "!add", "!8ball", "!fortune", "!bible", "!tarot", "!iching", "!zippy"]
+    commands = ["!dhamma", "!random", "!add", "!8ball", "!fortune", "!bible", "!tarot", "!iching", "!zippy", "!futhark"]
     output = []
     
     if msg[0] in commands:
@@ -22,6 +22,8 @@ def cmd(author, msg):
             output.append(get_quote("iching.txt"))
         elif msg[0] == "!zippy":
             output.append(get_quote("zippy.txt"))
+        elif msg[0] == "!futhark":
+            output.append(get_quote("futhark.txt"))            
         elif msg[0] == "!add":
             output.append("Suggest new quotes here: "
                           "https://bbs.gikopoi.com/thread/1705384771/")

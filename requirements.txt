@@ -4,3 +4,4 @@ websocket-client
 pytubefix
 Mastodon.py
 wikipedia
+cinemagoer
