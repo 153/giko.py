@@ -35,10 +35,15 @@ anon_name = "Spy"
 anti_spy = False
 ircmode = False
 ircroom = "null"
+tripcode = True
 
 plugins = ["blackjack", "craps", "roulette", "poker",
            "bank", "quotes", "memo", "help", "mod", "finance",
            "tweet", "seen", "metadata"]
+
+if tripcode is True:
+    with open("tripcode.txt", "r") as trip:
+        trip = trip.read().splitlines()[0].strip()
 
 def main():
     global api
@@ -48,6 +53,8 @@ def main():
     character = "naito_npc"
     name = "giko.py"
     password = "npc"
+    if tripcode:
+        name = name + "#" + trip
 
     if len(sys.argv) > 1:
         print(sys.argv)
