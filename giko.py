@@ -18,8 +18,8 @@ from plugin import poker
 from plugin import help
 from plugin import mod
 from plugin import finance
-from plugin import youtube
-from plugin import wiki
+#from plugin import youtube
+#from plugin import wiki
 from plugin import seen
 from plugin import tweet
 from plugin import metadata
@@ -38,7 +38,7 @@ ircroom = "null"
 
 plugins = ["blackjack", "craps", "roulette", "poker",
            "bank", "quotes", "memo", "help", "mod", "finance",
-           "youtube", "tweet", "wiki", "seen", "metadata"]
+           "tweet", "seen", "metadata"]
 
 def main():
     global api
