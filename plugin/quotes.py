@@ -2,7 +2,8 @@ import random
 
 def cmd(author, msg):
     msg = msg.split()
-    commands = ["!dhamma", "!random", "!add", "!8ball", "!fortune", "!bible", "!tarot", "!iching", "!zippy", "!futhark"]
+    commands = ["!dhamma", "!random", "!add", "!8ball", "!fortune", "!bible",
+                "!tarot", "!iching", "!zippy", "!futhark", "!zzazz"]
     output = []
     
     if msg[0] in commands:
@@ -23,7 +24,9 @@ def cmd(author, msg):
         elif msg[0] == "!zippy":
             output.append(get_quote("zippy.txt"))
         elif msg[0] == "!futhark":
-            output.append(get_quote("futhark.txt"))            
+            output.append(get_quote("futhark.txt"))
+        elif msg[0] == "!zzazz":
+            output.append(zzazz())
         elif msg[0] == "!add":
             output.append("Suggest new quotes here: "
                           "https://bbs.gikopoi.com/thread/1705384771/")
@@ -33,6 +36,13 @@ def get_quote(fn):
     with open(f"./quotedb/{fn}") as quotedb:
         quotedb = quotedb.read().splitlines()
     quote = random.choice(quotedb)
+    return quote
+
+def zzazz():
+    with open("./quotedb/giko-quotes.txt") as quotes:
+        quotes = quotes.read().splitlines()
+    quotes = [q for q in quotes if q.startswith("zzazzachu")]
+    quote = random.choice(quotes)
     return quote
 
 print("Quotes plugin loaded")

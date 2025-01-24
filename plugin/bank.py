@@ -109,7 +109,7 @@ def send_money(sender="", target="", amt=0, silent=0):
         moneys[target] += amt
         write_file()
         if not silent:
-            return f"You sent {target} {amt} gikocoins"
+            return f"{sender} sent {target} {amt} gikocoins"
         return
 
 def wealth():
