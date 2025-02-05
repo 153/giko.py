@@ -14,7 +14,7 @@ kick = site + "kick-ip"
 ban = site + "ban-ip"
 unban = site + "unban"
 login = {"pwd": secret}
-whitelist = ["giko.py", "Archduke", "issue maker"]
+whitelist = ["giko.py◆BOT", "akai.py◆NEET"]
 white_id = []
 
 users = {}
