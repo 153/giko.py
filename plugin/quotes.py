@@ -3,6 +3,7 @@ import random
 def cmd(author, msg):
     msg = msg.split()
     commands = ["!dhamma", "!random", "!add", "!8ball", "!fortune", "!bible",
+                "!quran",
                 "!tarot", "!iching", "!tao", "!zippy", "!futhark", "!zzazz"]
     output = []
     
@@ -13,6 +14,8 @@ def cmd(author, msg):
             output.append(get_quote("dhammapada.txt"))
         elif msg[0] == "!bible":
             output.append(get_quote("bible.txt"))
+        elif msg[0] == "!quran":
+            output.append(get_quote("quran.txt"))
         elif msg[0] == "!8ball":
             output.append(get_quote("8ball.txt"))
         elif msg[0] == "!fortune":
