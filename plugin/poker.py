@@ -45,6 +45,8 @@ def play(mode="", player="", discard="", amt=1):
         amt = 1
     if amt > bank.check_balance(player, 1):
         amt = bank.check_balance(player, 1)
+    if amt > 1000:
+        amt = 1000   
     if amt < 1:
         bank.deposit(player, 5)
         amt = 1

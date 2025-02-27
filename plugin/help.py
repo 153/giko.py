@@ -17,7 +17,7 @@ helptable = {"blackjack":
              "!send <amount> <player>",
 
              "quotes":
-             "Quote commands: !dhamma, !tao, !bible, !quran, !random, !zippy, !add <quote>",
+             "Quote commands: !dhamma, !tao, !sun, !bible, !quran, !random, !zippy, !add <quote>",
 
              "fortune":
              "Fortune commands: !fortune , !8ball , !tarot , !iching ",

@@ -2,9 +2,10 @@ import random
 
 def cmd(author, msg):
     msg = msg.split()
-    commands = ["!dhamma", "!random", "!add", "!8ball", "!fortune", "!bible",
-                "!quran",
-                "!tarot", "!iching", "!tao", "!zippy", "!futhark", "!zzazz"]
+    commands = ["!dhamma", "!bible", "!quran", "!tao", "!sun",
+                "!8ball", "!fortune", "!tarot", "!iching", "!futhark",
+                "!zippy", "!kanye", "!zzazz",
+                "!random", "!add"]
     output = []
     
     if msg[0] in commands:
@@ -26,10 +27,14 @@ def cmd(author, msg):
             output.append(get_quote("iching.txt"))
         elif msg[0] == "!tao":
             output.append(get_quote("tao.txt"))
+        elif msg[0] == "!sun":
+            output.append(get_quote("sun.txt"))
         elif msg[0] == "!zippy":
             output.append(get_quote("zippy.txt"))
         elif msg[0] == "!futhark":
             output.append(get_quote("futhark.txt"))
+        elif msg[0] == "!kanye":
+            output.append(get_quote("kanye.txt"))
         elif msg[0] == "!zzazz":
             output.append(zzazz())
         elif msg[0] == "!add":

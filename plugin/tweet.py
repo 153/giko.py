@@ -16,14 +16,23 @@ def setup():
     
 def login():
     mastodon.log_in(
-        "username",
+        "user",
         "password",
         to_file = "user.secret"
     )
-    
-mastodon = Mastodon(
-    client_id = "data/client.secret",
-    access_token = "data/user.secret",
+
+if __name__ == "__main__":
+    setup()
+    mastodon = Mastodon(
+        client_id = "client.secret",
+        api_base_url = instance_url
+        )
+    login()
+
+else:
+    mastodon = Mastodon(
+    client_id = "./data/client.secret",
+    access_token = "./data/user.secret",
     api_base_url = instance_url
 )
 
