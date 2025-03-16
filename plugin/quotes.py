@@ -4,7 +4,7 @@ def cmd(author, msg):
     msg = msg.split()
     commands = ["!dhamma", "!bible", "!quran", "!tao", "!sun",
                 "!8ball", "!fortune", "!tarot", "!iching", "!futhark",
-                "!zippy", "!kanye", "!zzazz",
+                "!zippy", "!jerk", "!kanye", "!zzazz",
                 "!random", "!add"]
     output = []
     
@@ -31,6 +31,8 @@ def cmd(author, msg):
             output.append(get_quote("sun.txt"))
         elif msg[0] == "!zippy":
             output.append(get_quote("zippy.txt"))
+        elif msg[0] == "!jerk":
+            output.append(get_quote("jerk.txt"))            
         elif msg[0] == "!futhark":
             output.append(get_quote("futhark.txt"))
         elif msg[0] == "!kanye":
