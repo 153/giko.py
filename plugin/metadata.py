@@ -14,7 +14,10 @@ def cmd(author, msg):
                 if "imdb.com/title/tt" in x:
                     output.append(imdb(x))
     if "youtu.be" in msg or "youtube.com/watch?v=" in msg:
-        output.append(youtube(msg))
+        try:
+            output.append(youtube(msg))
+        except:
+            pass
     msg = msg.split()
     if msg[0] == "!imdb":
         if len(msg) > 2:
