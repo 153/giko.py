@@ -69,6 +69,8 @@ def check_balance(player, silent=0):
     
 def add_entry(player, silent=0):
     ld()
+    if len(player.strip()) == 0:
+        return "Please enter a name"
     if not player in moneys:
         moneys[player] = 20
         write_file()
