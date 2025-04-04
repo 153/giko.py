@@ -4,7 +4,7 @@ def cmd(author, msg):
     msg = msg.split()
     commands = ["!dhamma", "!bible", "!quran", "!tao", "!sun",
                 "!8ball", "!fortune", "!tarot", "!iching", "!futhark",
-                "!zippy", "!jerk", "!kanye", "!zzazz",
+                "!zippy", "!jerk", "!kanye", "!zzazz", "!choose",
                 "!random", "!add"]
     output = []
     
@@ -39,6 +39,8 @@ def cmd(author, msg):
             output.append(get_quote("kanye.txt"))
         elif msg[0] == "!zzazz":
             output.append(zzazz())
+        elif msg[0] == "!choose":
+            output.append(chooser(msg))
         elif msg[0] == "!add":
             output.append("Suggest new quotes here: "
                           "https://bbs.gikopoi.com/thread/1705384771/")
@@ -56,5 +58,11 @@ def zzazz():
     quotes = [q for q in quotes if q.startswith("zzazzachu")]
     quote = random.choice(quotes)
     return quote
+
+def chooser(msg):
+    msg = " ".join(msg[1:])
+    msg = msg.split(", ")
+    msg = random.choice(msg)
+    return msg
 
 print("Quotes plugin loaded")
