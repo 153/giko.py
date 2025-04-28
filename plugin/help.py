@@ -22,6 +22,9 @@ helptable = {"blackjack":
              "fortune":
              "Fortune commands: !fortune , !8ball , !tarot , !iching ",
 
+             "karma":
+             "Karma commands: !karma <xyz>, xyz++, xyz--",
+
              "memo":
              "Memo commands: !mail <username> || <message> "
              "(seperate username from message with || )",

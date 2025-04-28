@@ -63,6 +63,8 @@ def chooser(msg):
     msg = " ".join(msg[1:])
     msg = msg.split(", ")
     msg = random.choice(msg)
+    if msg.startswith("#die") or msg.startswith("#train"):
+        return "Tricky boy!"
     return msg
 
 print("Quotes plugin loaded")

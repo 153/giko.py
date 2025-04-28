@@ -1,7 +1,7 @@
 python-socketio
 requests
 websocket-client
-pytubefix
+yt_dlp
 Mastodon.py
 wikipedia
 cinemagoer
