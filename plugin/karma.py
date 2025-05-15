@@ -16,9 +16,15 @@ def cmd(author, msg):
     else:
         if " " in msg:
             msg = msg.split(" ")
+        else:
+            msg = [msg]
         if msg[0] == "!karma":
             output = view_karma(" ".join(msg[1:]))
             return [output]
+        if msg[0] == "!best":
+            return [best()]
+        if msg[0] == "!worst":
+            return [worst()]
 
 def ld_karma():
     global karmadb
@@ -32,9 +38,9 @@ def ld_karma():
             entry = n[0]
         num = int(n[-1])
         karmadb[entry] = num
+    return karmadb
 
 def change_karma(term, mode):
-    global karmadb
     ld_karma()
     term = term.lower()
     
@@ -73,7 +79,30 @@ def upd_karma():
         out = str(op)
     with open("./data/karma.txt", "w") as outf:
         outf.write(out)
-    
+    ld_karma()
+
+def best():
+    ld_karma()
+    karmal = []
+    for k in karmadb:
+        karmal.append([k, int(karmadb[k])])
+    karmal.sort(key=lambda x: x[1])
+    out = "The best things: "
+    for k in karmal[::-1][:5]:
+        out += f"{k[0]} ({k[1]}), "
+    return out[:-1]
+        
+        
+def worst():
+    ld_karma()
+    karmal = []
+    for k in karmadb:
+        karmal.append([k, int(karmadb[k])])
+    karmal.sort(key=lambda x: x[1])
+    out = "The worst things: "
+    for k in karmal[:5]:
+        out += f"{k[0]} ({k[1]}), "
+    return out[:-2]    
     
 ld_karma()
 print("karma loaded")
