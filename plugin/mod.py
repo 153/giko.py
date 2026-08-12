@@ -199,6 +199,7 @@ def ban_user(player, uid):
     for i in users[uid][1]:
         auth[i] = True
 
+    auth["banbutton"] = "ban"
     if uid not in users:
         return "Unspecified error"
     if balance < 1000:
@@ -249,10 +250,11 @@ def unban_user(player, banned):
 def fmt_userlist(data):
     global users
     global ips
-    
-    data = data.split("<input type")[2:-1]
+
+    data = data.split("<input type")[2:-2]
     for d in data:
         pattern = "name='([a-z0-9\-]+)'"
+        print(d)
         name = d.split("  &lt;")[1].split("&gt;")[-2]
         ip = d.split("streaming: ")[-1].split("</label>")[0][2:]
         if "," in ip:
