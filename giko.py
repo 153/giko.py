@@ -24,6 +24,7 @@ from plugin import seen
 from plugin import tweet
 from plugin import metadata
 from plugin import karma
+from plugin import bets
 
 sio = socketio.Client()
 session = requests.Session()
@@ -40,7 +41,7 @@ tripcode = True
 
 plugins = ["blackjack", "craps", "roulette", "poker",
            "bank", "quotes", "memo", "help", "mod", "finance",
-           "tweet", "seen", "metadata", "karma"]
+           "tweet", "seen", "metadata", "karma", "bets"]
 
 if tripcode is True:
     with open("tripcode.txt", "r") as trip:

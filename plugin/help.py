@@ -16,6 +16,10 @@ helptable = {"blackjack":
              "Bank commands: !wealth , !create , !balance <player> , "
              "!send <amount> <player>",
 
+             "bets":
+             "Bet commands: !startbet <side1> <side2>, !bet <side> <amount>, "
+             "!endbet win <side>, !startbet cancel",
+
              "quotes":
              "Quote commands: !dhamma, !tao, !sun, !bible, !quran, !random, !zippy, !add <quote>",
 
